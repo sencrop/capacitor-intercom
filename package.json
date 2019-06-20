@@ -1,0 +1,50 @@
+{
+  "name": "@sencrop/capacitor-intercom",
+  "version": "0.0.1",
+  "description": "Capacitor Plugin for Intercom",
+  "author": "Paul Bottein",
+  "homepage": "https://github.com/sencrop/capacitor-intercom",
+  "main": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
+  "license": "MIT",
+  "scripts": {
+    "build": "npm run clean && tsc",
+    "clean": "rm -rf ./dist",
+    "watch": "tsc --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@capacitor/core": "latest"
+  },
+  "devDependencies": {
+    "typescript": "^3.2.4",
+    "@capacitor/ios": "latest",
+    "@capacitor/android": "latest"
+  },
+  "files": [
+    "dist/",
+    "ios/",
+    "android/",
+    "CapacitorIntercom.podspec"
+  ],
+  "keywords": [
+    "capacitor",
+    "plugin",
+    "native"
+  ],
+  "capacitor": {
+    "ios": {
+      "src": "ios"
+    },
+    "android": {
+      "src": "android"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sencrop/capacitor-intercom"
+  },
+  "bugs": {
+    "url": "https://github.com/sencrop/capacitor-intercom/issues"
+  }
+}
