@@ -25,7 +25,7 @@
     "dist/",
     "ios/",
     "android/",
-    "CapacitorIntercom.podspec"
+    "SencropCapacitorIntercom.podspec"
   ],
   "keywords": [
     "capacitor",
