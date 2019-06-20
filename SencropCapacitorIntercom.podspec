@@ -6,8 +6,8 @@
     s.name = 'SencropCapacitorIntercom'
     s.version = package['version']
     s.summary = package['description']
-    s.license = package['license']
     s.homepage = package['homepage']
+    s.license = package['license']
     s.author = package['author']
     s.source = { :git => 'https://github.com/sencrop/capacitor-intercom', :tag => s.version.to_s }
     s.source_files = 'ios/Plugin/**/*.{swift,h,m,c,cc,mm,cpp}'
