@@ -1,5 +1,11 @@
 import { WebPlugin } from "@capacitor/core";
-import { IntercomPlugin, IntercomUser, IntercomSettings, IntercomIdentity } from "./definitions";
+import {
+  IntercomPlugin,
+  IntercomUser,
+  IntercomSettings,
+  IntercomIdentity,
+  IntercomEvent
+} from "./definitions";
 declare var window: any;
 
 export class IntercomWeb extends WebPlugin implements IntercomPlugin {
@@ -11,10 +17,7 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
 
     const app_id = config.app_id;
 
-    window.intercomSettings = {
-      hide_default_launcher: true,
-      ...config
-    };
+    window.intercomSettings = config;
 
     (function() {
       var w = window;
@@ -49,12 +52,17 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
     })();
   }
 
-  registerIdentifiedUser(options: IntercomIdentity): Promise<void> {
-    const { userId, email } = options;
+  registerIdentifiedUser(identity: IntercomIdentity): Promise<void> {
+    const { userId, email } = identity;
     window.Intercom("boot", {
       user_id: userId,
-      email: email,
+      email: email
     });
+    return;
+  }
+
+  registerUnidentifiedUser(): Promise<void> {
+    window.Intercom("boot");
     return;
   }
 
@@ -68,45 +76,50 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
     return;
   }
 
-  displayMessenger(): Promise<void> {
-    window.Intercom("show");
-    return;
-  }
-
   logout(): Promise<void> {
     window.Intercom("shutdown");
     return;
   }
 
-  registerUnidentifiedUser(): Promise<void> {
-    throw new Error("Method not implemented.");
+  logEvent(event: IntercomEvent): Promise<void> {
+    const { name, data } = event;
+    window.Intercom("trackEvent", name, data);
+    return;
   }
 
-  logEvent(name: string, data: any): Promise<void> {
-    console.log(name, data);
-    throw new Error("Method not implemented.");
+  displayMessenger(): Promise<void> {
+    window.Intercom("show");
+    return;
   }
 
   displayMessageComposer(): Promise<void> {
-    throw new Error("Method not implemented.");
+    window.Intercom("showNewMessage");
+    return;
   }
 
   displayHelpCenter(): Promise<void> {
-    throw new Error("Method not implemented.");
+    window.Intercom("show");
+    return;
   }
 
   hideMessenger(): Promise<void> {
-    throw new Error("Method not implemented.");
+    window.Intercom("hide");
+    return;
   }
 
   displayLauncher(): Promise<void> {
-    throw new Error("Method not implemented.");
+    window.Intercom("update", {
+      hide_default_launcher: false
+    })
+    return;
   }
 
   hideLauncher(): Promise<void> {
-    throw new Error("Method not implemented.");
+    window.Intercom("update", {
+      hide_default_launcher: true
+    })
+    return;
   }
-
 }
 
 // const Intercom = new IntercomWeb();

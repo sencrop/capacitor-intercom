@@ -27,12 +27,16 @@ export interface IntercomSettings {
   background_color?: string;
 }
 
+export interface IntercomEvent {
+  name: string, data?: any
+}
+
 export interface IntercomPlugin {
-  registerIdentifiedUser(options: IntercomIdentity): Promise<void>;
+  registerIdentifiedUser(identity: IntercomIdentity): Promise<void>;
   registerUnidentifiedUser(): Promise<void>;
-  updateUser(options: IntercomUser): Promise<void>;
+  updateUser(user: IntercomUser): Promise<void>;
   logout(): Promise<void>;
-  logEvent(name: string, data: any): Promise<void>;
+  logEvent(event: IntercomEvent): Promise<void>;
   displayMessenger(): Promise<void>;
   displayMessageComposer(): Promise<void>;
   displayHelpCenter(): Promise<void>;

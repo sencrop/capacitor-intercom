@@ -29,6 +29,7 @@ public class IntercomPlugin extends Plugin {
     public void load() {
         //
         // get config
+
         String apiKey = Config.getString(CONFIG_KEY_PREFIX + "android_apiKey", "ADD_IN_CAPACITOR_CONFIG_JSON");
         String appId = Config.getString(CONFIG_KEY_PREFIX + "appId", "ADD_IN_CAPACITOR_CONFIG_JSON");
 
