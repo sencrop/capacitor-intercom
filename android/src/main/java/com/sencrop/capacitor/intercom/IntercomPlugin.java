@@ -70,11 +70,13 @@ public class IntercomPlugin extends Plugin {
         String email = call.getString("email");
         String phone = call.getString("phone");
         String name = call.getString("name");
+        String language = call.getString("language");
 
         UserAttributes userAttributes = new UserAttributes.Builder()
                 .withName(name)
                 .withEmail(email)
                 .withPhone(phone)
+                .withLanguageOverride(language)
                 .build();
         Intercom.client().updateUser(userAttributes);
         call.success();

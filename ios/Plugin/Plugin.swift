@@ -28,11 +28,13 @@ public class IntercomPlugin: CAPPlugin {
         let email = call.getString("email")
         let phone = call.getString("phone")
         let name = call.getString("name")
+        let language = call.getString("language")
         
         let userAttributes = ICMUserAttributes()
         userAttributes.email = email
         userAttributes.phone = phone
         userAttributes.name = name
+        userAttributes.languageOverride = language
 
         Intercom.updateUser(userAttributes)
         call.success()

@@ -13,6 +13,7 @@ export interface IntercomUser {
   email?: string;
   phone?: string;
   name?: string;
+  language?: string;
 }
 
 export interface IntercomSettings {

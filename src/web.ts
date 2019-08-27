@@ -67,11 +67,12 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
   }
 
   updateUser(user: IntercomUser): Promise<void> {
-    const { email, phone, name } = user;
+    const { email, phone, name, language } = user;
     window.Intercom("update", {
       email: email,
       phone: phone,
-      name: name
+      name: name,
+      language_override: language
     });
     return;
   }
