@@ -19,7 +19,7 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
 
     window.intercomSettings = config;
 
-    (function() {
+    (async () => {
       var w = window;
       var ic = w.Intercom;
       if (typeof ic === "function") {
