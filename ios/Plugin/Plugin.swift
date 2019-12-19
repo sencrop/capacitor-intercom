@@ -88,7 +88,7 @@ public class IntercomPlugin: CAPPlugin {
     }
     
     @objc func displayMessageComposer(_ call: CAPPluginCall) {
-        guard let initialMessage = call.getString("message") else {
+        guard let initialMessage = call.getString("content") else {
             call.error("Enter an initial message")
             return
         }

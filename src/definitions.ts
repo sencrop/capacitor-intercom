@@ -29,7 +29,12 @@ export interface IntercomSettings {
 }
 
 export interface IntercomEvent {
-  name: string, data?: any
+  name: string;
+  data?: any;
+}
+
+export interface IntercomMessage {
+  content?: string;
 }
 
 export interface IntercomPlugin {
@@ -39,7 +44,7 @@ export interface IntercomPlugin {
   logout(): Promise<void>;
   logEvent(event: IntercomEvent): Promise<void>;
   displayMessenger(): Promise<void>;
-  displayMessageComposer(): Promise<void>;
+  displayMessageComposer(message: IntercomMessage): Promise<void>;
   displayHelpCenter(): Promise<void>;
   hideMessenger(): Promise<void>;
   displayLauncher(): Promise<void>;

@@ -4,7 +4,8 @@ import {
   IntercomUser,
   IntercomSettings,
   IntercomIdentity,
-  IntercomEvent
+  IntercomEvent,
+  IntercomMessage
 } from "./definitions";
 declare var window: any;
 
@@ -93,8 +94,14 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
     return;
   }
 
-  displayMessageComposer(): Promise<void> {
-    window.Intercom("showNewMessage");
+  displayMessageComposer(message?: IntercomMessage): Promise<void> {
+    const { content } = message;
+    if (content) {
+      window.Intercom("showNewMessage", content);
+    } else {
+      window.Intercom("showNewMessage");
+    }
+
     return;
   }
 
@@ -111,14 +118,14 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
   displayLauncher(): Promise<void> {
     window.Intercom("update", {
       hide_default_launcher: false
-    })
+    });
     return;
   }
 
   hideLauncher(): Promise<void> {
     window.Intercom("update", {
       hide_default_launcher: true
-    })
+    });
     return;
   }
 }
