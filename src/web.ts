@@ -106,7 +106,7 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
   logout(): Promise<void> {
     window.Intercom("shutdown");
     window.Upscope("stopSession");
-    window.Upscope("sessionEnd");
+    window.Upscope("reset");
     return;
   }
 
