@@ -52,9 +52,7 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
       }
     })();
 
-    (function() {
-      var w = window;
-      var u = w.Upscope;
+    (function(w, u, d) {
       var i = <any>function() {
         i.c(arguments);
       };
@@ -63,7 +61,6 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
         i.q.push(args);
       };
       var l = function() {
-        var d = document;
         var s = d.createElement("script");
         s.type = "text/javascript";
         s.async = true;
@@ -75,7 +72,7 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
         w.Upscope = i;
         l();
       }
-    })();
+    })(window, window.Upscope, document);
   }
 
   registerIdentifiedUser(identity: IntercomIdentity): Promise<void> {
@@ -105,8 +102,6 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
 
   logout(): Promise<void> {
     window.Intercom("shutdown");
-    window.Upscope("stopSession");
-    window.Upscope("sessionEnd");
     return;
   }
 
@@ -118,7 +113,6 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
 
   displayMessenger(): Promise<void> {
     window.Intercom("show");
-    window.Upscope("init");
     return;
   }
 
