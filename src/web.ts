@@ -90,7 +90,6 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
   }
 
   displayMessenger(): Promise<void> {
-    window.Intercom("boot");
     window.Intercom("show");
     return;
   }
