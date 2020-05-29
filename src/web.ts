@@ -5,7 +5,7 @@ import {
   IntercomSettings,
   IntercomIdentity,
   IntercomEvent,
-  IntercomMessage
+  IntercomMessage,
 } from "./definitions";
 declare var window: any;
 
@@ -13,14 +13,14 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
   constructor(config: IntercomSettings) {
     super({
       name: "Intercom",
-      platforms: ["web"]
+      platforms: ["web"],
     });
 
     const app_id = config.app_id;
 
     window.intercomSettings = config;
 
-    (function() {
+    (function () {
       var w = window;
       var ic = w.Intercom;
       if (typeof ic === "function") {
@@ -28,15 +28,15 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
         ic("update", w.intercomSettings);
       } else {
         var d = document;
-        var i = <any>function() {
+        var i = <any>function () {
           i.c(arguments);
         };
         i.q = [];
-        i.c = function(args: any) {
+        i.c = function (args: any) {
           i.q.push(args);
         };
         w.Intercom = i;
-        var l = function() {
+        var l = function () {
           var s = d.createElement("script");
           s.type = "text/javascript";
           s.async = true;
@@ -57,7 +57,7 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
     const { userId, email } = identity;
     window.Intercom("boot", {
       user_id: userId,
-      email: email
+      email: email,
     });
     return;
   }
@@ -73,7 +73,7 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
       email: email,
       phone: phone,
       name: name,
-      language_override: language
+      language_override: language,
     });
     return;
   }
@@ -90,6 +90,7 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
   }
 
   displayMessenger(): Promise<void> {
+    window.Intercom("boot");
     window.Intercom("show");
     return;
   }
@@ -117,14 +118,14 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
 
   displayLauncher(): Promise<void> {
     window.Intercom("update", {
-      hide_default_launcher: false
+      hide_default_launcher: false,
     });
     return;
   }
 
   hideLauncher(): Promise<void> {
     window.Intercom("update", {
-      hide_default_launcher: true
+      hide_default_launcher: true,
     });
     return;
   }
