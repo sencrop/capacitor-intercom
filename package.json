@@ -1,6 +1,6 @@
 {
   "name": "@sencrop/capacitor-intercom",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "Capacitor Plugin for Intercom",
   "author": "Paul Bottein",
   "homepage": "https://github.com/sencrop/capacitor-intercom",
