@@ -54,10 +54,11 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
   }
 
   registerIdentifiedUser(identity: IntercomIdentity): Promise<void> {
-    const { userId, email } = identity;
+    const { userId, email, userHash } = identity;
     window.Intercom("boot", {
       user_id: userId,
-      email: email,
+      email,
+      userHash,
     });
     return;
   }
@@ -70,9 +71,9 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
   updateUser(user: IntercomUser): Promise<void> {
     const { email, phone, name, language } = user;
     window.Intercom("update", {
-      email: email,
-      phone: phone,
-      name: name,
+      email,
+      phone,
+      name,
       language_override: language,
     });
     return;

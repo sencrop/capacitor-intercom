@@ -46,7 +46,8 @@ public class IntercomPlugin extends Plugin {
     public void registerIdentifiedUser(PluginCall call) {
         String email = call.getString("email");
         String userId = call.getString("userId");
-
+        String userHash = call.getString("userHash");
+       
         Registration registration = Registration.create();
 
         if (email != null && email.length() > 0) {
@@ -55,7 +56,12 @@ public class IntercomPlugin extends Plugin {
         if (userId != null && userId.length() > 0) {
             registration = registration.withUserId(userId);
         }
+      
         Intercom.client().registerIdentifiedUser(registration);
+
+        if (userHash != null && userHash.length() > 0) {
+            Intercom.client().setUserHash(userHash); 
+        }
         call.success();
     }
 

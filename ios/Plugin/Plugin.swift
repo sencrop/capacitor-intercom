@@ -43,19 +43,23 @@ public class IntercomPlugin: CAPPlugin {
     @objc func registerIdentifiedUser(_ call: CAPPluginCall) {
         let userId = call.getString("userId")
         let email = call.getString("email")
-        
+        let hmac = call.getString("userHash")
+      
         if (userId != nil && email != nil) {
             Intercom.registerUser(withUserId: userId!, email: email!)
-            call.success()
         }else if (userId != nil) {
             Intercom.registerUser(withUserId: userId!)
-            call.success()
         }else if (email != nil) {
             Intercom.registerUser(withEmail: email!)
-            call.success()
         }else{
             call.error("No user registered. You must supply an email, userId or both")
         }
+
+        if (hmac != nil) {
+            Intercom.setUserHash(hmac!)
+        }
+
+        call.success()
     }
     
     @objc func registerUnidentifiedUser(_ call: CAPPluginCall) {

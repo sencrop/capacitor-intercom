@@ -7,6 +7,7 @@ declare module "@capacitor/core" {
 export interface IntercomIdentity {
   userId: string;
   email?: string;
+  userHash?: string;
 }
 
 export interface IntercomUser {
