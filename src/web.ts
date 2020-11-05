@@ -58,7 +58,7 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
     window.Intercom("boot", {
       user_id: userId,
       email,
-      userHash,
+      user_hash: userHash,
     });
     return;
   }
