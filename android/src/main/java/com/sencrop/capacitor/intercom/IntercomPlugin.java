@@ -89,6 +89,17 @@ public class IntercomPlugin extends Plugin {
     }
 
     @PluginMethod()
+    public void setCustomProperty(PluginCall call) {
+        String key = call.getString("key");
+        String value = call.getString("value");
+
+        UserAttributes userAttributes = new UserAttributes.Builder()
+            .withCustomAttribute(key, value)
+            .build();
+        Intercom.client().updateUser(userAttributes);
+    }
+
+    @PluginMethod()
     public void logout(PluginCall call) {
         Intercom.client().logout();
         call.success();

@@ -6,10 +6,17 @@ import {
   IntercomIdentity,
   IntercomEvent,
   IntercomMessage,
+  Property,
 } from "./definitions";
 declare var window: any;
 
+const DELAY_SEND_BATCH_CUSTOM_PROPERTIES = 1000;
+
 export class IntercomWeb extends WebPlugin implements IntercomPlugin {
+
+  customProperties: Record<string, string> = {};
+  timeoutCustomProperties: number = null;
+
   constructor(config: IntercomSettings) {
     super({
       name: "Intercom",
@@ -79,8 +86,31 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
     return;
   }
 
+  // Since there is a limit in Intecom (20 calls per 30 minutes)
+  // We need to accumulate those properties and send it in one batch
+  setCustomProperty(property: Property): Promise<void> {
+    const { key, value } = property;
+
+    this.customProperties[key] = value;
+
+    if(this.timeoutCustomProperties) {
+      clearTimeout(this.timeoutCustomProperties)
+    }
+
+    this.timeoutCustomProperties = setTimeout(() => {
+      window.Intercom("update", this.customProperties);
+      this.customProperties = {};
+      this.timeoutCustomProperties = null;
+    }, DELAY_SEND_BATCH_CUSTOM_PROPERTIES);
+
+    return;
+  }
+
   logout(): Promise<void> {
     window.Intercom("shutdown");
+    if(this.timeoutCustomProperties) {
+      clearTimeout(this.timeoutCustomProperties)
+    }
     return;
   }
 

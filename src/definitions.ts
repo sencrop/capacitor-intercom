@@ -38,6 +38,11 @@ export interface IntercomMessage {
   content?: string;
 }
 
+export interface Property {
+  key: string;
+  value: string;
+}
+
 export interface IntercomPlugin {
   registerIdentifiedUser(identity: IntercomIdentity): Promise<void>;
   registerUnidentifiedUser(): Promise<void>;
@@ -50,4 +55,5 @@ export interface IntercomPlugin {
   hideMessenger(): Promise<void>;
   displayLauncher(): Promise<void>;
   hideLauncher(): Promise<void>;
+  setCustomProperty(property: Property): Promise<void>;
 }

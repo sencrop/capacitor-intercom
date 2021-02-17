@@ -66,6 +66,17 @@ public class IntercomPlugin: CAPPlugin {
         Intercom.registerUnidentifiedUser()
         call.success()
     }
+
+    @objc func setCustomProperty(_ call: CAPPluginCall) {
+        let key = call.getString("key")
+        let value = call.getString("value")
+        
+        let userAttributes = ICMUserAttributes()
+        userAttributes.customAttributes = [key: value]
+        Intercom.updateUser(userAttributes)
+
+        call.success()
+    }
     
     @objc func logout(_ call: CAPPluginCall) {
         Intercom.logout()
