@@ -1,6 +1,7 @@
 package com.sencrop.capacitor.intercom;
 
 import com.getcapacitor.Config;
+import com.getcapacitor.JSObject;
 import com.getcapacitor.NativePlugin;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
@@ -89,14 +90,20 @@ public class IntercomPlugin extends Plugin {
     }
 
     @PluginMethod()
-    public void setCustomProperty(PluginCall call) {
-        String key = call.getString("key");
-        String value = call.getString("value");
+    public void setCustomAttributes(PluginCall call) {
+        Map<String, Object> attributes = mapFromJSON(call.getObject("attributes"));
 
-        UserAttributes userAttributes = new UserAttributes.Builder()
-            .withCustomAttribute(key, value)
-            .build();
+        UserAttributes.Builder userAttributesBuilder = new UserAttributes.Builder();
+
+        for (Map.Entry<String, Object> attribute : attributes.entrySet()) {
+            String key = attribute.getKey();
+            Object value = attribute.getValue();
+            userAttributesBuilder = userAttributesBuilder.withCustomAttribute(key, value);
+        }
+
+        UserAttributes userAttributes = userAttributesBuilder.build();
         Intercom.client().updateUser(userAttributes);
+        call.success();
     }
 
     @PluginMethod()

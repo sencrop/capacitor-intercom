@@ -38,9 +38,8 @@ export interface IntercomMessage {
   content?: string;
 }
 
-export interface Property {
-  key: string;
-  value: string;
+export interface IntercomCustomAttributes {
+  attributes: Record<string, number | string | boolean>;
 }
 
 export interface IntercomPlugin {
@@ -55,5 +54,5 @@ export interface IntercomPlugin {
   hideMessenger(): Promise<void>;
   displayLauncher(): Promise<void>;
   hideLauncher(): Promise<void>;
-  setCustomProperty(property: Property): Promise<void>;
+  setCustomAttributes(payload: IntercomCustomAttributes): Promise<void>;
 }

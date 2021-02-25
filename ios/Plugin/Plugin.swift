@@ -40,6 +40,16 @@ public class IntercomPlugin: CAPPlugin {
         call.success()
     }
     
+    @objc func setCustomAttributes(_ call: CAPPluginCall) {
+        let attributes = call.getObject("attributes")
+
+        let userAttributes = ICMUserAttributes()
+        userAttributes.customAttributes = attributes
+        Intercom.updateUser(userAttributes)
+
+        call.success()
+    }
+    
     @objc func registerIdentifiedUser(_ call: CAPPluginCall) {
         let userId = call.getString("userId")
         let email = call.getString("email")
@@ -64,17 +74,6 @@ public class IntercomPlugin: CAPPlugin {
     
     @objc func registerUnidentifiedUser(_ call: CAPPluginCall) {
         Intercom.registerUnidentifiedUser()
-        call.success()
-    }
-
-    @objc func setCustomProperty(_ call: CAPPluginCall) {
-        let key = call.getString("key")
-        let value = call.getString("value")
-        
-        let userAttributes = ICMUserAttributes()
-        userAttributes.customAttributes = [key: value]
-        Intercom.updateUser(userAttributes)
-
         call.success()
     }
     
