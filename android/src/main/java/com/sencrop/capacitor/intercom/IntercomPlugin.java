@@ -20,7 +20,7 @@ import io.intercom.android.sdk.UserAttributes;
 import io.intercom.android.sdk.identity.Registration;
 import io.intercom.android.sdk.Intercom;
 
-@NativePlugin(name="Intercom")
+@CapacitorPlugin(name="Intercom")
 public class IntercomPlugin extends Plugin {
 
     public static final String CONFIG_KEY_PREFIX = "plugins.Intercom.";
@@ -62,13 +62,13 @@ public class IntercomPlugin extends Plugin {
         if (userHash != null && userHash.length() > 0) {
             Intercom.client().setUserHash(userHash); 
         }
-        call.success();
+        call.resolve();
     }
 
     @PluginMethod()
     public void registerUnidentifiedUser(PluginCall call) {
         Intercom.client().registerUnidentifiedUser();
-        call.success();
+        call.resolve();
     }
 
     @PluginMethod()
@@ -85,7 +85,7 @@ public class IntercomPlugin extends Plugin {
                 .withLanguageOverride(language)
                 .build();
         Intercom.client().updateUser(userAttributes);
-        call.success();
+        call.resolve();
     }
 
     @PluginMethod()
@@ -102,7 +102,7 @@ public class IntercomPlugin extends Plugin {
     @PluginMethod()
     public void logout(PluginCall call) {
         Intercom.client().logout();
-        call.success();
+        call.resolve();
     }
 
     @PluginMethod()
@@ -116,13 +116,13 @@ public class IntercomPlugin extends Plugin {
             Intercom.client().logEvent(eventName, metaData);
         }
 
-        call.success();
+        call.resolve();
     }
 
     @PluginMethod()
     public void displayMessenger(PluginCall call) {
         Intercom.client().displayMessenger();
-        call.success();
+        call.resolve();
     }
 
     @PluginMethod()
@@ -134,31 +134,31 @@ public class IntercomPlugin extends Plugin {
         else {
             Intercom.client().displayMessageComposer(messageContent);
         }
-        call.success();
+        call.resolve();
     }
 
     @PluginMethod()
     public void displayHelpCenter(PluginCall call) {
         Intercom.client().displayHelpCenter();
-        call.success();
+        call.resolve();
     }
 
     @PluginMethod()
     public void hideMessenger(PluginCall call) {
         Intercom.client().hideMessenger();
-        call.success();
+        call.resolve();
     }
 
     @PluginMethod()
     public void displayLauncher(PluginCall call) {
         Intercom.client().setLauncherVisibility(Intercom.VISIBLE);
-        call.success();
+        call.resolve();
     }
 
     @PluginMethod()
     public void hideLauncher(PluginCall call) {
         Intercom.client().setLauncherVisibility(Intercom.GONE);
-        call.success();
+        call.resolve();
     }
 
     private static Map<String, Object> mapFromJSON(JSONObject jsonObject) {
