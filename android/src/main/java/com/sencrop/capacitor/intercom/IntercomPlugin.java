@@ -1,8 +1,5 @@
 package com.sencrop.capacitor.intercom;
 
-import com.getcapacitor.Config;
-import com.getcapacitor.JSObject;
-import com.getcapacitor.NativePlugin;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
@@ -31,8 +28,8 @@ public class IntercomPlugin extends Plugin {
         //
         // get config
 
-        String apiKey = Config.getString(CONFIG_KEY_PREFIX + "android_apiKey", "ADD_IN_CAPACITOR_CONFIG_JSON");
-        String appId = Config.getString(CONFIG_KEY_PREFIX + "appId", "ADD_IN_CAPACITOR_CONFIG_JSON");
+        String apiKey = getConfig().getString(CONFIG_KEY_PREFIX + "android_apiKey", "ADD_IN_CAPACITOR_CONFIG_JSON");
+        String appId = getConfig().getString(CONFIG_KEY_PREFIX + "appId", "ADD_IN_CAPACITOR_CONFIG_JSON");
 
         //
         // init intercom sdk
