@@ -42,6 +42,11 @@ public class IntercomPlugin extends Plugin {
     }
 
     @PluginMethod()
+    public void initialize(PluginCall call) {
+        // Empty function, init is done by the load function
+    }
+
+    @PluginMethod()
     public void registerIdentifiedUser(PluginCall call) {
         String email = call.getString("email");
         String userId = call.getString("userId");

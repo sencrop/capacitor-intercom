@@ -17,6 +17,10 @@ public class IntercomPlugin: CAPPlugin {
         NotificationCenter.default.addObserver(self, selector: #selector(self.didRegisterWithToken(notification:)), name: Notification.Name(CAPNotifications.DidRegisterForRemoteNotificationsWithDeviceToken.name()), object: nil)
     }
     
+    @objc func initialize(_ call: CAPPluginCall) {
+        // Empty function, init is done by the load function
+    }
+    
     @objc func didRegisterWithToken(notification: NSNotification) {
         guard let deviceToken = notification.object as? Data else {
             return
