@@ -43,6 +43,7 @@ export interface IntercomCustomAttributes {
 }
 
 export interface IntercomPlugin {
+  initialize(config: IntercomSettings): void;
   registerIdentifiedUser(identity: IntercomIdentity): Promise<void>;
   registerUnidentifiedUser(): Promise<void>;
   updateUser(user: IntercomUser): Promise<void>;

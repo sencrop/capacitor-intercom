@@ -11,12 +11,14 @@ import {
 declare var window: any;
 
 export class IntercomWeb extends WebPlugin implements IntercomPlugin {
-  constructor(config: IntercomSettings) {
+  constructor() {
     super({
       name: "Intercom",
       platforms: ["web"],
     });
+  }
 
+  initialize(config: IntercomSettings) {
     const app_id = config.app_id;
 
     window.intercomSettings = config;
@@ -43,7 +45,9 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
           s.async = true;
           s.src = `https://widget.intercom.io/widget/${app_id}`;
           var x = d.getElementsByTagName("script")[0];
-          x.parentNode.insertBefore(s, x);
+          if (x && x.parentNode) {
+            x.parentNode.insertBefore(s, x);
+          }
         };
         if (w.attachEvent) {
           w.attachEvent("onload", l);
@@ -54,88 +58,72 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
     })();
   }
 
-  registerIdentifiedUser(identity: IntercomIdentity): Promise<void> {
+  async registerIdentifiedUser(identity: IntercomIdentity): Promise<void> {
     const { userId, email, userHash } = identity;
     window.Intercom("boot", {
       user_id: userId,
       email,
       user_hash: userHash,
     });
-    return;
   }
 
-  registerUnidentifiedUser(): Promise<void> {
-    window.Intercom("boot");
-    return;
+  async registerUnidentifiedUser(): Promise<void> {
+    await window.Intercom("boot");
   }
 
-  updateUser(user: IntercomUser): Promise<void> {
+  async updateUser(user: IntercomUser): Promise<void> {
     const { email, phone, name, language } = user;
-    window.Intercom("update", {
+    await window.Intercom("update", {
       email,
       phone,
       name,
       language_override: language,
     });
-    return;
   }
 
-  setCustomAttributes(payload: IntercomCustomAttributes): Promise<void> {
-    window.Intercom("update", payload.attributes);
-    return;
+  async setCustomAttributes(payload: IntercomCustomAttributes): Promise<void> {
+    await window.Intercom("update", payload.attributes);
   }
 
-  logout(): Promise<void> {
-    window.Intercom("shutdown");
-    return;
+  async logout(): Promise<void> {
+    await window.Intercom("shutdown");
   }
 
-  logEvent(event: IntercomEvent): Promise<void> {
+  async logEvent(event: IntercomEvent): Promise<void> {
     const { name, data } = event;
-    window.Intercom("trackEvent", name, data);
-    return;
+    await window.Intercom("trackEvent", name, data);
   }
 
-  displayMessenger(): Promise<void> {
-    window.Intercom("show");
-    return;
+  async displayMessenger(): Promise<void> {
+    await window.Intercom("show");
   }
 
-  displayMessageComposer(message?: IntercomMessage): Promise<void> {
-    const { content } = message;
+  async displayMessageComposer(message?: IntercomMessage): Promise<void> {
+    const { content } = message || {};
     if (content) {
-      window.Intercom("showNewMessage", content);
+      await window.Intercom("showNewMessage", content);
     } else {
-      window.Intercom("showNewMessage");
+      await window.Intercom("showNewMessage");
     }
-
-    return;
   }
 
-  displayHelpCenter(): Promise<void> {
+  async displayHelpCenter(): Promise<void> {
     window.Intercom("show");
-    return;
   }
 
-  hideMessenger(): Promise<void> {
-    window.Intercom("hide");
-    return;
+  async hideMessenger(): Promise<void> {
+    await window.Intercom("hide");
   }
 
-  displayLauncher(): Promise<void> {
-    window.Intercom("update", {
+  async displayLauncher(): Promise<void> {
+    await window.Intercom("update", {
       hide_default_launcher: false,
     });
-    return;
   }
 
-  hideLauncher(): Promise<void> {
-    window.Intercom("update", {
+  async hideLauncher(): Promise<void> {
+    await window.Intercom("update", {
       hide_default_launcher: true,
     });
-    return;
   }
 }
-
-// const Intercom = new IntercomWeb();
-// export { Intercom };
