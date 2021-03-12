@@ -9,16 +9,12 @@ import Intercom
 @objc(IntercomPlugin)
 public class IntercomPlugin: CAPPlugin {
     
-    public override func load() {
+    @objc func initialize(_ call: CAPPluginCall) {
         let apiKey = getConfigValue("ios_apiKey") as? String ?? "ADD_IN_CAPACITOR_CONFIG_JSON"
         let appId = getConfigValue("appId") as? String ?? "ADD_IN_CAPACITOR_CONFIG_JSON"
         Intercom.setApiKey(apiKey, forAppId: appId)
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.didRegisterWithToken(notification:)), name: Notification.Name(CAPNotifications.DidRegisterForRemoteNotificationsWithDeviceToken.name()), object: nil)
-    }
-    
-    @objc func initialize(_ call: CAPPluginCall) {
-        // Empty function, init is done by the load function
     }
     
     @objc func didRegisterWithToken(notification: NSNotification) {

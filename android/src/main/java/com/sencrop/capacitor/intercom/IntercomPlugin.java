@@ -21,29 +21,15 @@ import io.intercom.android.sdk.Intercom;
 
 @CapacitorPlugin(name="Intercom")
 public class IntercomPlugin extends Plugin {
-
-    public static final String CONFIG_KEY_PREFIX = "plugins.Intercom.";
-
-    @Override()
-    public void load() {
-        //
+    @PluginMethod()
+    public void initialize(PluginCall call) {
         // get config
+        String apiKey = getConfig().getString("android_apiKey", "ADD_IN_CAPACITOR_CONFIG_JSON");
+        String appId = getConfig().getString("appId", "ADD_IN_CAPACITOR_CONFIG_JSON");
 
-        String apiKey = getConfig().getString(CONFIG_KEY_PREFIX + "android_apiKey", "ADD_IN_CAPACITOR_CONFIG_JSON");
-        String appId = getConfig().getString(CONFIG_KEY_PREFIX + "appId", "ADD_IN_CAPACITOR_CONFIG_JSON");
-
-        //
         // init intercom sdk
         Intercom.initialize(this.getActivity().getApplication(), apiKey, appId);
         Intercom.client().handlePushMessage();
-        //
-        // load parent
-        super.load();
-    }
-
-    @PluginMethod()
-    public void initialize(PluginCall call) {
-        // Empty function, init is done by the load function
     }
 
     @PluginMethod()
