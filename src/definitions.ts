@@ -1,9 +1,3 @@
-declare module "@capacitor/core" {
-  interface PluginRegistry {
-    Intercom: IntercomPlugin;
-  }
-}
-
 export interface IntercomIdentity {
   userId: string;
   email?: string;

@@ -4,7 +4,7 @@ export default {
     {
       file: "dist/plugin.js",
       format: "iife",
-      name: "capacitorPlugin",
+      name: "capacitorIntercom",
       globals: {
         "@capacitor/core": "capacitorExports",
       },
