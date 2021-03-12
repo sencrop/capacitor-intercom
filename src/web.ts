@@ -11,13 +11,6 @@ import {
 declare var window: any;
 
 export class IntercomWeb extends WebPlugin implements IntercomPlugin {
-  constructor() {
-    super({
-      name: "Intercom",
-      platforms: ["web"],
-    });
-  }
-
   initialize(config: IntercomSettings) {
     const app_id = config.app_id;
 
@@ -99,7 +92,7 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
   }
 
   async displayMessageComposer(message?: IntercomMessage): Promise<void> {
-    const { content } = message || {};
+    const { content } = message || {};
     if (content) {
       await window.Intercom("showNewMessage", content);
     } else {
