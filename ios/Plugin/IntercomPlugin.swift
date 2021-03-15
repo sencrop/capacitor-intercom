@@ -4,17 +4,18 @@ import Intercom
 
 /**
  * Please read the Capacitor iOS Plugin Development Guide
- * here: https://capacitor.ionicframework.com/docs/plugins/ios
+ * here: https://capacitorjs.com/docs/plugins/ios
  */
 @objc(IntercomPlugin)
 public class IntercomPlugin: CAPPlugin {
-    
     @objc func initialize(_ call: CAPPluginCall) {
         let apiKey = getConfigValue("ios_apiKey") as? String ?? "ADD_IN_CAPACITOR_CONFIG_JSON"
         let appId = getConfigValue("appId") as? String ?? "ADD_IN_CAPACITOR_CONFIG_JSON"
         Intercom.setApiKey(apiKey, forAppId: appId)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.didRegisterWithToken(notification:)), name: Notification.Name(CAPNotifications.DidRegisterForRemoteNotificationsWithDeviceToken.name()), object: nil)
+        
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.didRegisterWithToken(notification:)), name: .capacitorDidRegisterForRemoteNotifications, object: nil)
     }
     
     @objc func didRegisterWithToken(notification: NSNotification) {
@@ -37,7 +38,7 @@ public class IntercomPlugin: CAPPlugin {
         userAttributes.languageOverride = language
 
         Intercom.updateUser(userAttributes)
-        call.success()
+        call.resolve()
     }
     
     @objc func setCustomAttributes(_ call: CAPPluginCall) {
@@ -47,7 +48,7 @@ public class IntercomPlugin: CAPPlugin {
         userAttributes.customAttributes = attributes
         Intercom.updateUser(userAttributes)
 
-        call.success()
+        call.resolve()
     }
     
     @objc func registerIdentifiedUser(_ call: CAPPluginCall) {
@@ -62,24 +63,24 @@ public class IntercomPlugin: CAPPlugin {
         }else if (email != nil) {
             Intercom.registerUser(withEmail: email!)
         }else{
-            call.error("No user registered. You must supply an email, userId or both")
+            call.reject("No user registered. You must supply an email, userId or both")
         }
 
         if (hmac != nil) {
             Intercom.setUserHash(hmac!)
         }
 
-        call.success()
+        call.resolve()
     }
     
     @objc func registerUnidentifiedUser(_ call: CAPPluginCall) {
         Intercom.registerUnidentifiedUser()
-        call.success()
+        call.resolve()
     }
     
     @objc func logout(_ call: CAPPluginCall) {
         Intercom.logout()
-        call.success()
+        call.resolve()
     }
     
     @objc func logEvent(_ call: CAPPluginCall) {
@@ -93,40 +94,40 @@ public class IntercomPlugin: CAPPlugin {
             Intercom.logEvent(withName: eventName!)
         }
         
-        call.success()
+        call.resolve()
     }
     
     @objc func displayMessenger(_ call: CAPPluginCall) {
         Intercom.presentMessenger();
-        call.success()
+        call.resolve()
     }
     
     @objc func displayMessageComposer(_ call: CAPPluginCall) {
         guard let initialMessage = call.getString("content") else {
-            call.error("Enter an initial message")
+            call.reject("Enter an initial message")
             return
         }
         Intercom.presentMessageComposer(initialMessage);
-        call.success()
+        call.resolve()
     }
     
     @objc func displayHelpCenter(_ call: CAPPluginCall) {
         Intercom.presentHelpCenter()
-        call.success()
+        call.resolve()
     }
     
     @objc func hideMessenger(_ call: CAPPluginCall) {
         Intercom.hideMessenger()
-        call.success()
+        call.resolve()
     }
     
     @objc func displayLauncher(_ call: CAPPluginCall) {
         Intercom.setLauncherVisible(true)
-        call.success()
+        call.resolve()
     }
     
     @objc func hideLauncher(_ call: CAPPluginCall) {
         Intercom.setLauncherVisible(false)
-        call.success()
+        call.resolve()
     }
 }

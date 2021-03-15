@@ -2,9 +2,6 @@
   "name": "@sencrop/capacitor-intercom",
   "version": "3.1.5",
   "description": "Intercom Plugin for Capacitor",
-  "homepage": "https://github.com/sencrop/capacitor-intercom",
-  "author": "Sencrop",
-  "license": "MIT",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
@@ -16,9 +13,23 @@
     "ios/Plugin/",
     "SencropCapacitorIntercom.podspec"
   ],
+  "author": "Sencrop",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sencrop/capacitor-intercom.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sencrop/capacitor-intercom/issues"
+  },
+  "keywords": [
+    "capacitor",
+    "plugin",
+    "native"
+  ],
   "scripts": {
     "verify": "npm run verify:ios && npm run verify:android && npm run verify:web",
-    "verify:ios": "cd ios && pod install && xcodebuild -workspace Plugin.xcworkspace -scheme Plugin && cd ..",
+    "verify:ios": "cd ios && pod install && xcodebuild -target iOs -workspace Plugin.xcworkspace -scheme Plugin && cd ..",
     "verify:android": "cd android && ./gradlew clean build test && cd ..",
     "verify:web": "npm run build",
     "lint": "npm run eslint && npm run prettier -- --check && npm run swiftlint -- lint",
@@ -63,17 +74,5 @@
     "android": {
       "src": "android"
     }
-  },
-  "keywords": [
-    "capacitor",
-    "plugin",
-    "native"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/sencrop/capacitor-intercom"
-  },
-  "bugs": {
-    "url": "https://github.com/sencrop/capacitor-intercom/issues"
   }
 }

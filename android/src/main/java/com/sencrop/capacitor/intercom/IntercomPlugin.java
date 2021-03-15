@@ -19,8 +19,8 @@ import io.intercom.android.sdk.UserAttributes;
 import io.intercom.android.sdk.identity.Registration;
 import io.intercom.android.sdk.Intercom;
 
-@CapacitorPlugin(name="Intercom")
-public class IntercomPlugin extends Plugin {
+@CapacitorPlugin(name = "Intercom")
+public class IntercomPlugin extends Plugin { 
     @PluginMethod()
     public void initialize(PluginCall call) {
         // get config
