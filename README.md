@@ -203,17 +203,31 @@ setCustomAttributes(payload: IntercomCustomAttributes) => any
 
 #### IntercomSettings
 
-| Prop                           | Type                 |
-| ------------------------------ | -------------------- |
-| **`app_id`**                   | <code>string</code>  |
-| **`custom_launcher_selector`** | <code>string</code>  |
-| **`alignment`**                | <code>string</code>  |
-| **`vertical_padding`**         | <code>number</code>  |
-| **`horizontal_padding`**       | <code>number</code>  |
-| **`hide_default_launcher`**    | <code>boolean</code> |
-| **`session_duration`**         | <code>number</code>  |
-| **`action_color`**             | <code>string</code>  |
-| **`background_color`**         | <code>string</code>  |
+| Prop                           | Type                                                                                                                                                                                      |
+| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`app_id`**                   | <code>string</code>                                                                                                                                                                       |
+| **`alignment`**                | <code>string</code>                                                                                                                                                                       |
+| **`custom_launcher_selector`** | <code>string</code>                                                                                                                                                                       |
+| **`hide_default_launcher`**    | <code>boolean</code>                                                                                                                                                                      |
+| **`horizontal_padding`**       | <code>number</code>                                                                                                                                                                       |
+| **`session_duration`**         | <code>number</code>                                                                                                                                                                       |
+| **`vertical_padding`**         | <code>number</code>                                                                                                                                                                       |
+| **`action_color`**             | <code>string</code>                                                                                                                                                                       |
+| **`background_color`**         | <code>string</code>                                                                                                                                                                       |
+| **`email`**                    | <code>string</code>                                                                                                                                                                       |
+| **`phone`**                    | <code>string</code>                                                                                                                                                                       |
+| **`created_at`**               | <code>number</code>                                                                                                                                                                       |
+| **`name`**                     | <code>string</code>                                                                                                                                                                       |
+| **`user_id`**                  | <code>string</code>                                                                                                                                                                       |
+| **`user_hash`**                | <code>string</code>                                                                                                                                                                       |
+| **`unsubscribed_from_emails`** | <code>boolean</code>                                                                                                                                                                      |
+| **`language_override`**        | <code>string</code>                                                                                                                                                                       |
+| **`utm_campaign`**             | <code>string</code>                                                                                                                                                                       |
+| **`utm_content`**              | <code>string</code>                                                                                                                                                                       |
+| **`utm_medium`**               | <code>string</code>                                                                                                                                                                       |
+| **`utm_source`**               | <code>string</code>                                                                                                                                                                       |
+| **`utm_term`**                 | <code>string</code>                                                                                                                                                                       |
+| **`company`**                  | <code>{ id: string \| number; name: string; created_at?: number; plan?: string; monthly_spend?: number; user_count?: number; size?: number; website?: string; industry?: string; }</code> |
 
 
 #### IntercomIdentity
