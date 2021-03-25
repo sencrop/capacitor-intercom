@@ -8,20 +8,25 @@ import type {
   IntercomEvent,
   IntercomMessage,
   IntercomCustomAttributes,
+  Intercom,
 } from './definitions';
 
 declare global {
   interface Window {
-    Intercom?: any,
+    Intercom?: Intercom,
     intercomSettings?: IntercomSettings
     attachEvent?: any;
   }
 };
 
 export class IntercomWeb extends WebPlugin implements IntercomPlugin {
-  initialize(config: IntercomSettings): void {
-    const app_id = config.app_id;
+  initialize(config?: IntercomSettings): void {
+    const app_id = config?.app_id;
 
+    if (!app_id) {
+      console.error("Intercom app_id is not defined");
+      return;
+    }
     window.intercomSettings = config;
 
     (function () {
@@ -74,7 +79,7 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
 
   async registerUnidentifiedUser(): Promise<void> {
     if (window.Intercom) {
-      await window.Intercom('boot');
+      await window.Intercom('boot', {}); 
     }
   }
 
