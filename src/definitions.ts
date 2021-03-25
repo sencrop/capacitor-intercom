@@ -7,8 +7,6 @@
 //                 Onat Yigit Mercan <https://github.com/onatm>
 //                 Chia-Lun Wu <https://github.com/bingo4508>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-
-
 export interface IntercomSettings {
   // Messenger attributes
   app_id?: string;
