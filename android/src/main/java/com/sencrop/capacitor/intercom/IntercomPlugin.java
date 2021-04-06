@@ -30,6 +30,7 @@ public class IntercomPlugin extends Plugin {
         // init intercom sdk
         Intercom.initialize(this.getActivity().getApplication(), apiKey, appId);
         Intercom.client().handlePushMessage();
+        call.resolve();
     }
 
     @PluginMethod()
