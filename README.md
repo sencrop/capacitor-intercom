@@ -36,12 +36,12 @@ npx cap sync
 ### initialize(...)
 
 ```typescript
-initialize(config: IntercomSettings) => void
+initialize(config: IntercomSettings & IntercomInitConfig) => void
 ```
 
-| Param        | Type                                                          |
-| ------------ | ------------------------------------------------------------- |
-| **`config`** | <code><a href="#intercomsettings">IntercomSettings</a></code> |
+| Param        | Type                                                                                                                 |
+| ------------ | -------------------------------------------------------------------------------------------------------------------- |
+| **`config`** | <code><a href="#intercomsettings">IntercomSettings</a> & <a href="#intercominitconfig">IntercomInitConfig</a></code> |
 
 --------------------
 
@@ -228,6 +228,15 @@ setCustomAttributes(payload: IntercomCustomAttributes) => any
 | **`utm_source`**               | <code>string</code>                                                                                                                                                                       |
 | **`utm_term`**                 | <code>string</code>                                                                                                                                                                       |
 | **`company`**                  | <code>{ id: string \| number; name: string; created_at?: number; plan?: string; monthly_spend?: number; user_count?: number; size?: number; website?: string; industry?: string; }</code> |
+
+
+#### IntercomInitConfig
+
+| Prop                  | Type                |
+| --------------------- | ------------------- |
+| **`app_id`**          | <code>string</code> |
+| **`ios_api_key`**     | <code>string</code> |
+| **`android_api_key`** | <code>string</code> |
 
 
 #### IntercomIdentity

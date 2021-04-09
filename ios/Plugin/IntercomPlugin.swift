@@ -9,11 +9,18 @@ import Intercom
 @objc(IntercomPlugin)
 public class IntercomPlugin: CAPPlugin {
     @objc func initialize(_ call: CAPPluginCall) {
-        let apiKey = getConfigValue("ios_apiKey") as? String ?? "ADD_IN_CAPACITOR_CONFIG_JSON"
-        let appId = getConfigValue("appId") as? String ?? "ADD_IN_CAPACITOR_CONFIG_JSON"
-        Intercom.setApiKey(apiKey, forAppId: appId)  
-        NotificationCenter.default.addObserver(self, selector: #selector(self.didRegisterWithToken(notification:)), name: .capacitorDidRegisterForRemoteNotifications, object: nil)
-        call.resolve()
+        let apiKey = call.getString("ios_api_key")
+        let appId = call.getString("app_id")
+
+        if let appId = appId, let apiKey = apiKey {
+            Intercom.setApiKey(apiKey, forAppId: appId)  
+            NotificationCenter.default.addObserver(self, selector: #selector(self.didRegisterWithToken(notification:)), name: .capacitorDidRegisterForRemoteNotifications, object: nil)
+            call.resolve()
+        } else {
+            call.reject("Missing app_id or ios_api_key")
+        }
+
+       
     }
     
     @objc func didRegisterWithToken(notification: NSNotification) {

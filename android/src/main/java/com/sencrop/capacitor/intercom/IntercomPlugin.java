@@ -24,13 +24,17 @@ public class IntercomPlugin extends Plugin {
     @PluginMethod()
     public void initialize(PluginCall call) {
         // get config
-        String apiKey = getConfig().getString("android_apiKey", "ADD_IN_CAPACITOR_CONFIG_JSON");
-        String appId = getConfig().getString("appId", "ADD_IN_CAPACITOR_CONFIG_JSON");
+        String apiKey = call.getString("android_api_key");
+        String appId = call.getString("app_id");
 
-        // init intercom sdk
-        Intercom.initialize(this.getActivity().getApplication(), apiKey, appId);
-        Intercom.client().handlePushMessage();
-        call.resolve();
+        if (appId != null && apiKey != null) {
+            // init intercom sdk
+            Intercom.initialize(this.getActivity().getApplication(), apiKey, appId);
+            Intercom.client().handlePushMessage();
+            call.resolve();
+        } else {
+            call.reject("Missing app_id or android_api_key");
+        }
     }
 
     @PluginMethod()
