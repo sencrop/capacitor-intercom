@@ -1,33 +1,29 @@
 PODS:
-  - Capacitor (3.0.0-rc.0):
+  - Capacitor (3.2.3):
     - CapacitorCordova
-  - CapacitorCordova (3.0.0-rc.0)
-  - Intercom (9.3.3)
+  - CapacitorCordova (3.2.3)
+  - Intercom (10.3.0)
 
 DEPENDENCIES:
   - "Capacitor (from `../node_modules/@capacitor/ios`)"
   - "CapacitorCordova (from `../node_modules/@capacitor/ios`)"
-  - Intercom (from `https://github.com/intercom/intercom-ios.git`, tag `9.3.3`)
+  - Intercom (~> 10.3.0)
+
+SPEC REPOS:
+  trunk:
+    - Intercom
 
 EXTERNAL SOURCES:
   Capacitor:
     :path: "../node_modules/@capacitor/ios"
   CapacitorCordova:
     :path: "../node_modules/@capacitor/ios"
-  Intercom:
-    :git: https://github.com/intercom/intercom-ios.git
-    :tag: 9.3.3
-
-CHECKOUT OPTIONS:
-  Intercom:
-    :git: https://github.com/intercom/intercom-ios.git
-    :tag: 9.3.3
 
 SPEC CHECKSUMS:
-  Capacitor: 86ad4e70e633545d641b60f6727facc085419fb2
-  CapacitorCordova: 08b012572e6d039f14ef12b7de2ba6d0f385209f
-  Intercom: 37ca86a8990360ed5d206a5ebae7c5a7168f36d4
+  Capacitor: 525175245027732c4f9bc7c5209176c1acef854a
+  CapacitorCordova: e571f22d5672cea00d703d82eafb09adf257980d
+  Intercom: b697b5972ca0fad3412a13c67c6920eab301498b
 
-PODFILE CHECKSUM: 6484315469b1b40c3d767583d89efef92dc4cf02
+PODFILE CHECKSUM: 3544751f1dd82f9186ec2bc74b16f6c2bcedf62c
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.2

@@ -4,24 +4,21 @@ import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
+import io.intercom.android.sdk.Intercom;
+import io.intercom.android.sdk.UserAttributes;
+import io.intercom.android.sdk.identity.Registration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-
-import io.intercom.android.sdk.UserAttributes;
-import io.intercom.android.sdk.identity.Registration;
-import io.intercom.android.sdk.Intercom;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 @CapacitorPlugin(name = "Intercom")
-public class IntercomPlugin extends Plugin { 
-    @PluginMethod()
+public class IntercomPlugin extends Plugin {
+
+    @PluginMethod
     public void initialize(PluginCall call) {
         // get config
         String apiKey = getConfig().getString("android_apiKey", "ADD_IN_CAPACITOR_CONFIG_JSON");
@@ -33,12 +30,12 @@ public class IntercomPlugin extends Plugin {
         call.resolve();
     }
 
-    @PluginMethod()
+    @PluginMethod
     public void registerIdentifiedUser(PluginCall call) {
         String email = call.getString("email");
         String userId = call.getString("userId");
         String userHash = call.getString("userHash");
-       
+
         Registration registration = Registration.create();
 
         if (email != null && email.length() > 0) {
@@ -47,22 +44,22 @@ public class IntercomPlugin extends Plugin {
         if (userId != null && userId.length() > 0) {
             registration = registration.withUserId(userId);
         }
-      
+
         Intercom.client().registerIdentifiedUser(registration);
 
         if (userHash != null && userHash.length() > 0) {
-            Intercom.client().setUserHash(userHash); 
+            Intercom.client().setUserHash(userHash);
         }
         call.resolve();
     }
 
-    @PluginMethod()
+    @PluginMethod
     public void registerUnidentifiedUser(PluginCall call) {
         Intercom.client().registerUnidentifiedUser();
         call.resolve();
     }
 
-    @PluginMethod()
+    @PluginMethod
     public void updateUser(PluginCall call) {
         String email = call.getString("email");
         String phone = call.getString("phone");
@@ -70,16 +67,16 @@ public class IntercomPlugin extends Plugin {
         String language = call.getString("language");
 
         UserAttributes userAttributes = new UserAttributes.Builder()
-                .withName(name)
-                .withEmail(email)
-                .withPhone(phone)
-                .withLanguageOverride(language)
-                .build();
+            .withName(name)
+            .withEmail(email)
+            .withPhone(phone)
+            .withLanguageOverride(language)
+            .build();
         Intercom.client().updateUser(userAttributes);
         call.resolve();
     }
 
-    @PluginMethod()
+    @PluginMethod
     public void setCustomAttributes(PluginCall call) {
         Map<String, Object> attributes = mapFromJSON(call.getObject("attributes"));
 
@@ -96,13 +93,13 @@ public class IntercomPlugin extends Plugin {
         call.success();
     }
 
-    @PluginMethod()
+    @PluginMethod
     public void logout(PluginCall call) {
         Intercom.client().logout();
         call.resolve();
     }
 
-    @PluginMethod()
+    @PluginMethod
     public void logEvent(PluginCall call) {
         String eventName = call.getString("name");
         Map<String, Object> metaData = mapFromJSON(call.getObject("data"));
@@ -116,43 +113,42 @@ public class IntercomPlugin extends Plugin {
         call.resolve();
     }
 
-    @PluginMethod()
+    @PluginMethod
     public void displayMessenger(PluginCall call) {
         Intercom.client().displayMessenger();
         call.resolve();
     }
 
-    @PluginMethod()
+    @PluginMethod
     public void displayMessageComposer(PluginCall call) {
         String messageContent = call.getString("content");
         if (messageContent == null) {
             Intercom.client().displayMessageComposer();
-        }
-        else {
+        } else {
             Intercom.client().displayMessageComposer(messageContent);
         }
         call.resolve();
     }
 
-    @PluginMethod()
+    @PluginMethod
     public void displayHelpCenter(PluginCall call) {
         Intercom.client().displayHelpCenter();
         call.resolve();
     }
 
-    @PluginMethod()
+    @PluginMethod
     public void hideMessenger(PluginCall call) {
-        Intercom.client().hideMessenger();
+        Intercom.client().hideIntercom();
         call.resolve();
     }
 
-    @PluginMethod()
+    @PluginMethod
     public void displayLauncher(PluginCall call) {
         Intercom.client().setLauncherVisibility(Intercom.VISIBLE);
         call.resolve();
     }
 
-    @PluginMethod()
+    @PluginMethod
     public void hideLauncher(PluginCall call) {
         Intercom.client().setLauncherVisibility(Intercom.GONE);
         call.resolve();
