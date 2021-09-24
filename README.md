@@ -27,6 +27,7 @@ npx cap sync
 * [`hideLauncher()`](#hidelauncher)
 * [`setCustomAttributes(...)`](#setcustomattributes)
 * [Interfaces](#interfaces)
+* [Type Aliases](#type-aliases)
 
 </docgen-index>
 
@@ -49,14 +50,12 @@ initialize(config: IntercomSettings) => void
 ### registerIdentifiedUser(...)
 
 ```typescript
-registerIdentifiedUser(identity: IntercomIdentity) => any
+registerIdentifiedUser(identity: IntercomIdentity) => Promise<void>
 ```
 
 | Param          | Type                                                          |
 | -------------- | ------------------------------------------------------------- |
 | **`identity`** | <code><a href="#intercomidentity">IntercomIdentity</a></code> |
-
-**Returns:** <code>any</code>
 
 --------------------
 
@@ -64,10 +63,8 @@ registerIdentifiedUser(identity: IntercomIdentity) => any
 ### registerUnidentifiedUser()
 
 ```typescript
-registerUnidentifiedUser() => any
+registerUnidentifiedUser() => Promise<void>
 ```
-
-**Returns:** <code>any</code>
 
 --------------------
 
@@ -75,14 +72,12 @@ registerUnidentifiedUser() => any
 ### updateUser(...)
 
 ```typescript
-updateUser(user: IntercomUser) => any
+updateUser(user: IntercomUser) => Promise<void>
 ```
 
 | Param      | Type                                                  |
 | ---------- | ----------------------------------------------------- |
 | **`user`** | <code><a href="#intercomuser">IntercomUser</a></code> |
-
-**Returns:** <code>any</code>
 
 --------------------
 
@@ -90,10 +85,8 @@ updateUser(user: IntercomUser) => any
 ### logout()
 
 ```typescript
-logout() => any
+logout() => Promise<void>
 ```
-
-**Returns:** <code>any</code>
 
 --------------------
 
@@ -101,14 +94,12 @@ logout() => any
 ### logEvent(...)
 
 ```typescript
-logEvent(event: IntercomEvent) => any
+logEvent(event: IntercomEvent) => Promise<void>
 ```
 
 | Param       | Type                                                    |
 | ----------- | ------------------------------------------------------- |
 | **`event`** | <code><a href="#intercomevent">IntercomEvent</a></code> |
-
-**Returns:** <code>any</code>
 
 --------------------
 
@@ -116,10 +107,8 @@ logEvent(event: IntercomEvent) => any
 ### displayMessenger()
 
 ```typescript
-displayMessenger() => any
+displayMessenger() => Promise<void>
 ```
-
-**Returns:** <code>any</code>
 
 --------------------
 
@@ -127,14 +116,12 @@ displayMessenger() => any
 ### displayMessageComposer(...)
 
 ```typescript
-displayMessageComposer(message: IntercomMessage) => any
+displayMessageComposer(message: IntercomMessage) => Promise<void>
 ```
 
 | Param         | Type                                                        |
 | ------------- | ----------------------------------------------------------- |
 | **`message`** | <code><a href="#intercommessage">IntercomMessage</a></code> |
-
-**Returns:** <code>any</code>
 
 --------------------
 
@@ -142,10 +129,8 @@ displayMessageComposer(message: IntercomMessage) => any
 ### displayHelpCenter()
 
 ```typescript
-displayHelpCenter() => any
+displayHelpCenter() => Promise<void>
 ```
-
-**Returns:** <code>any</code>
 
 --------------------
 
@@ -153,10 +138,8 @@ displayHelpCenter() => any
 ### hideMessenger()
 
 ```typescript
-hideMessenger() => any
+hideMessenger() => Promise<void>
 ```
-
-**Returns:** <code>any</code>
 
 --------------------
 
@@ -164,10 +147,8 @@ hideMessenger() => any
 ### displayLauncher()
 
 ```typescript
-displayLauncher() => any
+displayLauncher() => Promise<void>
 ```
-
-**Returns:** <code>any</code>
 
 --------------------
 
@@ -175,10 +156,8 @@ displayLauncher() => any
 ### hideLauncher()
 
 ```typescript
-hideLauncher() => any
+hideLauncher() => Promise<void>
 ```
-
-**Returns:** <code>any</code>
 
 --------------------
 
@@ -186,14 +165,12 @@ hideLauncher() => any
 ### setCustomAttributes(...)
 
 ```typescript
-setCustomAttributes(payload: IntercomCustomAttributes) => any
+setCustomAttributes(payload: IntercomCustomAttributes) => Promise<void>
 ```
 
 | Param         | Type                                                                          |
 | ------------- | ----------------------------------------------------------------------------- |
 | **`payload`** | <code><a href="#intercomcustomattributes">IntercomCustomAttributes</a></code> |
-
-**Returns:** <code>any</code>
 
 --------------------
 
@@ -266,8 +243,18 @@ setCustomAttributes(payload: IntercomCustomAttributes) => any
 
 #### IntercomCustomAttributes
 
-| Prop             | Type             |
-| ---------------- | ---------------- |
-| **`attributes`** | <code>any</code> |
+| Prop             | Type                                                                                 |
+| ---------------- | ------------------------------------------------------------------------------------ |
+| **`attributes`** | <code><a href="#record">Record</a>&lt;string, number \| string \| boolean&gt;</code> |
+
+
+### Type Aliases
+
+
+#### Record
+
+Construct a type with a set of properties K of type T
+
+<code>{ [P in K]: T; }</code>
 
 </docgen-api>
