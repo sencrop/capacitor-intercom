@@ -154,6 +154,13 @@ public class IntercomPlugin extends Plugin {
         call.resolve();
     }
 
+    @PluginMethod
+    public void displayArticle(PluginCall call) {
+        String articleId = call.getString("id");
+        Intercom.client().displayArticle(articleId);
+        call.resolve();
+    }
+
     private static Map<String, Object> mapFromJSON(JSONObject jsonObject) {
         if (jsonObject == null) {
             return null;
