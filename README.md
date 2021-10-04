@@ -23,6 +23,7 @@ npx cap sync
 * [`displayMessageComposer(...)`](#displaymessagecomposer)
 * [`displayHelpCenter()`](#displayhelpcenter)
 * [`displayArticle(...)`](#displayarticle)
+* [`searchHelpCenter(...)`](#searchhelpcenter)
 * [`hideMessenger()`](#hidemessenger)
 * [`displayLauncher()`](#displaylauncher)
 * [`hideLauncher()`](#hidelauncher)
@@ -149,6 +150,21 @@ displayArticle(article: IntercomArticle) => Promise<void>
 --------------------
 
 
+### searchHelpCenter(...)
+
+```typescript
+searchHelpCenter(search: IntercomHelpSearch) => Promise<IntercomHelpSearchResults>
+```
+
+| Param        | Type                                                              |
+| ------------ | ----------------------------------------------------------------- |
+| **`search`** | <code><a href="#intercomhelpsearch">IntercomHelpSearch</a></code> |
+
+**Returns:** <code>Promise&lt;<a href="#intercomhelpsearchresults">IntercomHelpSearchResults</a>&gt;</code>
+
+--------------------
+
+
 ### hideMessenger()
 
 ```typescript
@@ -260,6 +276,20 @@ setCustomAttributes(payload: IntercomCustomAttributes) => Promise<void>
 | Prop     | Type                |
 | -------- | ------------------- |
 | **`id`** | <code>string</code> |
+
+
+#### IntercomHelpSearchResults
+
+| Prop          | Type                                                                                           |
+| ------------- | ---------------------------------------------------------------------------------------------- |
+| **`results`** | <code>{ articleId: string; matchingSnippet: string; summary: string; title: string; }[]</code> |
+
+
+#### IntercomHelpSearch
+
+| Prop             | Type                |
+| ---------------- | ------------------- |
+| **`searchTerm`** | <code>string</code> |
 
 
 #### IntercomCustomAttributes

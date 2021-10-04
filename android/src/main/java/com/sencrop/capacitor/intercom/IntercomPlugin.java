@@ -1,11 +1,14 @@
 package com.sencrop.capacitor.intercom;
 
+import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
 import io.intercom.android.sdk.Intercom;
 import io.intercom.android.sdk.UserAttributes;
+import io.intercom.android.sdk.helpcenter.api.HelpCenterArticleSearchResult;
+import io.intercom.android.sdk.helpcenter.api.SearchRequestCallback;
 import io.intercom.android.sdk.identity.Registration;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -90,7 +93,7 @@ public class IntercomPlugin extends Plugin {
 
         UserAttributes userAttributes = userAttributesBuilder.build();
         Intercom.client().updateUser(userAttributes);
-        call.success();
+        call.resolve();
     }
 
     @PluginMethod
@@ -134,6 +137,30 @@ public class IntercomPlugin extends Plugin {
     public void displayHelpCenter(PluginCall call) {
         Intercom.client().displayHelpCenter();
         call.resolve();
+    }
+
+    @PluginMethod
+    public void searchHelpCenter(PluginCall call) {
+        String searchTerm = call.getString("searchTerm");
+
+        Intercom.client().searchHelpCenter(searchTerm, new SearchRequestCallback() {
+            @Override
+            public void onFailure() {
+                call.reject("Intercom searchHelpCenter unknown error");
+            }
+
+            @Override
+            public void onError(int i) {
+                call.reject("Intercom searchHelpCenter error. Http code : " + i);
+            }
+
+            @Override
+            public void onComplete(List<HelpCenterArticleSearchResult> list) {
+                JSObject ret = new JSObject();
+                ret.put("results", list);
+                call.resolve(ret);
+            }
+        });
     }
 
     @PluginMethod

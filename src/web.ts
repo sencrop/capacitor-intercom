@@ -10,6 +10,8 @@ import type {
   IntercomCustomAttributes,
   Intercom,
   IntercomArticle,
+  IntercomHelpSearch,
+  IntercomHelpSearchResults,
 } from './definitions';
 
 declare global {
@@ -141,6 +143,11 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
     if (window.Intercom) {
       window.Intercom('show');
     }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  searchHelpCenter(_search: IntercomHelpSearch): Promise<IntercomHelpSearchResults> {
+    throw this.unimplemented('[Intercom] searchHelpCenter not implemented on web.');
   }
 
   async hideMessenger(): Promise<void> {

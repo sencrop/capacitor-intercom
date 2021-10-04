@@ -127,6 +127,26 @@ public class IntercomPlugin: CAPPlugin {
     }
     
     
+    @objc func searchHelpCenter(_ call: CAPPluginCall) {
+        guard let searchTerm = call.getString("searchTerm") else {
+            call.reject("Enter an search term")
+            return
+        }
+        
+        Intercom.searchHelpCenter(searchTerm, completion: { (result: Result<[HelpCenterArticleSearchResult], ICMHelpCenterDataError>) -> Void in
+            switch result {
+            case .success(let articles):
+                call.resolve([
+                  "results": articles
+                ])
+                return
+            case .failure(let error):
+                call.reject("Intercom searchHelpCenter error. Error :" + error.localizedDescription);
+                return
+            }
+        })
+    }
+    
     @objc func hideMessenger(_ call: CAPPluginCall) {
         Intercom.hide()
         call.resolve()

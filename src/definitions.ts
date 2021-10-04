@@ -104,6 +104,14 @@ export interface IntercomCustomAttributes {
   attributes: Record<string, number | string | boolean>;
 }
 
+export interface IntercomHelpSearch {
+  searchTerm: string;
+}
+
+export interface IntercomHelpSearchResults {
+  results: { articleId: string; matchingSnippet: string; summary: string; title: string }[];
+}
+
 export interface IntercomPlugin {
   initialize(config: IntercomSettings): void;
   registerIdentifiedUser(identity: IntercomIdentity): Promise<void>;
@@ -115,6 +123,7 @@ export interface IntercomPlugin {
   displayMessageComposer(message: IntercomMessage): Promise<void>;
   displayHelpCenter(): Promise<void>;
   displayArticle(article: IntercomArticle): Promise<void>;
+  searchHelpCenter(search: IntercomHelpSearch): Promise<IntercomHelpSearchResults>;
   hideMessenger(): Promise<void>;
   displayLauncher(): Promise<void>;
   hideLauncher(): Promise<void>;
