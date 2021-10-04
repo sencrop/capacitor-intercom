@@ -96,6 +96,10 @@ export interface IntercomMessage {
   content?: string;
 }
 
+export interface IntercomArticle {
+  id: string;
+}
+
 export interface IntercomCustomAttributes {
   attributes: Record<string, number | string | boolean>;
 }
@@ -110,6 +114,7 @@ export interface IntercomPlugin {
   displayMessenger(): Promise<void>;
   displayMessageComposer(message: IntercomMessage): Promise<void>;
   displayHelpCenter(): Promise<void>;
+  displayArticle(article: IntercomArticle): Promise<void>;
   hideMessenger(): Promise<void>;
   displayLauncher(): Promise<void>;
   hideLauncher(): Promise<void>;

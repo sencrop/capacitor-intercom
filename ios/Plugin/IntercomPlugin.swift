@@ -113,6 +113,19 @@ public class IntercomPlugin: CAPPlugin {
         Intercom.presentHelpCenter()
         call.resolve()
     }
+
+    @objc func displayArticle(_ call: CAPPluginCall) {
+        let articleId = call.getString("id")
+
+        if (articleId != nil) {
+            Intercom.presentArticle(articleId!)
+            call.resolve()
+        }else{
+            call.reject("No article id. You must supply an articleId to display it")
+        }
+       
+    }
+    
     
     @objc func hideMessenger(_ call: CAPPluginCall) {
         Intercom.hide()

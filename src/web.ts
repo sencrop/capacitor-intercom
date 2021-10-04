@@ -9,6 +9,7 @@ import type {
   IntercomMessage,
   IntercomCustomAttributes,
   Intercom,
+  IntercomArticle,
 } from './definitions';
 
 declare global {
@@ -118,6 +119,11 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
     if (window.Intercom) {
       await window.Intercom('show');
     }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async displayArticle(_article: IntercomArticle): Promise<void> {
+    throw new Error('[Intercom] displayArticle is not implemented on web');
   }
 
   async displayMessageComposer(message?: IntercomMessage): Promise<void> {

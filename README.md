@@ -22,6 +22,7 @@ npx cap sync
 * [`displayMessenger()`](#displaymessenger)
 * [`displayMessageComposer(...)`](#displaymessagecomposer)
 * [`displayHelpCenter()`](#displayhelpcenter)
+* [`displayArticle(...)`](#displayarticle)
 * [`hideMessenger()`](#hidemessenger)
 * [`displayLauncher()`](#displaylauncher)
 * [`hideLauncher()`](#hidelauncher)
@@ -135,6 +136,19 @@ displayHelpCenter() => Promise<void>
 --------------------
 
 
+### displayArticle(...)
+
+```typescript
+displayArticle(article: IntercomArticle) => Promise<void>
+```
+
+| Param         | Type                                                        |
+| ------------- | ----------------------------------------------------------- |
+| **`article`** | <code><a href="#intercomarticle">IntercomArticle</a></code> |
+
+--------------------
+
+
 ### hideMessenger()
 
 ```typescript
@@ -239,6 +253,13 @@ setCustomAttributes(payload: IntercomCustomAttributes) => Promise<void>
 | Prop          | Type                |
 | ------------- | ------------------- |
 | **`content`** | <code>string</code> |
+
+
+#### IntercomArticle
+
+| Prop     | Type                |
+| -------- | ------------------- |
+| **`id`** | <code>string</code> |
 
 
 #### IntercomCustomAttributes
