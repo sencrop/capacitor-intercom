@@ -1,22 +1,65 @@
 package com.sencrop.capacitor.intercom;
 
+import androidx.annotation.NonNull;
+
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
-import io.intercom.android.sdk.Intercom;
-import io.intercom.android.sdk.UserAttributes;
-import io.intercom.android.sdk.identity.Registration;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import org.json.JSONArray;
-import org.json.JSONObject;
+
+import io.intercom.android.sdk.Intercom;
+import io.intercom.android.sdk.IntercomError;
+import io.intercom.android.sdk.IntercomStatusCallback;
+import io.intercom.android.sdk.UserAttributes;
+import io.intercom.android.sdk.identity.Registration;
 
 @CapacitorPlugin(name = "Intercom")
 public class IntercomPlugin extends Plugin {
+
+    private static Map<String, Object> mapFromJSON(JSONObject jsonObject) {
+        if (jsonObject == null) {
+            return null;
+        }
+        Map<String, Object> map = new HashMap<>();
+        Iterator<String> keysIter = jsonObject.keys();
+        while (keysIter.hasNext()) {
+            String key = keysIter.next();
+            Object value = getObject(jsonObject.opt(key));
+            if (value != null) {
+                map.put(key, value);
+            }
+        }
+        return map;
+    }
+
+    private static Object getObject(Object value) {
+        if (value instanceof JSONObject) {
+            value = mapFromJSON((JSONObject) value);
+        } else if (value instanceof JSONArray) {
+            value = listFromJSON((JSONArray) value);
+        }
+        return value;
+    }
+
+    private static List<Object> listFromJSON(JSONArray jsonArray) {
+        List<Object> list = new ArrayList<>();
+        for (int i = 0, count = jsonArray.length(); i < count; i++) {
+            Object value = getObject(jsonArray.opt(i));
+            if (value != null) {
+                list.add(value);
+            }
+        }
+        return list;
+    }
 
     @PluginMethod
     public void initialize(PluginCall call) {
@@ -45,18 +88,38 @@ public class IntercomPlugin extends Plugin {
             registration = registration.withUserId(userId);
         }
 
-        Intercom.client().registerIdentifiedUser(registration);
+        Intercom.client().loginIdentifiedUser(registration, new IntercomStatusCallback() {
+            @Override
+            public void onSuccess() {
+                if (userHash != null && userHash.length() > 0) {
+                    Intercom.client().setUserHash(userHash);
+                }
+                call.resolve();
+            }
 
-        if (userHash != null && userHash.length() > 0) {
-            Intercom.client().setUserHash(userHash);
-        }
-        call.resolve();
+            @Override
+            public void onFailure(@NonNull IntercomError intercomError) {
+                call.reject("Intercom error : " + intercomError.getErrorMessage());
+            }
+        });
+
+
     }
 
     @PluginMethod
     public void registerUnidentifiedUser(PluginCall call) {
-        Intercom.client().registerUnidentifiedUser();
-        call.resolve();
+
+        Intercom.client().loginUnidentifiedUser(new IntercomStatusCallback() {
+            @Override
+            public void onSuccess() {
+                call.resolve();
+            }
+
+            @Override
+            public void onFailure(@NonNull IntercomError intercomError) {
+                call.reject("Intercom error : " + intercomError.getErrorMessage());
+            }
+        });
     }
 
     @PluginMethod
@@ -67,13 +130,22 @@ public class IntercomPlugin extends Plugin {
         String language = call.getString("language");
 
         UserAttributes userAttributes = new UserAttributes.Builder()
-            .withName(name)
-            .withEmail(email)
-            .withPhone(phone)
-            .withLanguageOverride(language)
-            .build();
-        Intercom.client().updateUser(userAttributes);
-        call.resolve();
+                .withName(name)
+                .withEmail(email)
+                .withPhone(phone)
+                .withLanguageOverride(language)
+                .build();
+        Intercom.client().updateUser(userAttributes, new IntercomStatusCallback() {
+            @Override
+            public void onSuccess() {
+                call.resolve();
+            }
+
+            @Override
+            public void onFailure(@NonNull IntercomError intercomError) {
+                call.reject("Intercom error : " + intercomError.getErrorMessage());
+            }
+        });
     }
 
     @PluginMethod
@@ -89,8 +161,17 @@ public class IntercomPlugin extends Plugin {
         }
 
         UserAttributes userAttributes = userAttributesBuilder.build();
-        Intercom.client().updateUser(userAttributes);
-        call.success();
+        Intercom.client().updateUser(userAttributes, new IntercomStatusCallback() {
+            @Override
+            public void onSuccess() {
+                call.resolve();
+            }
+
+            @Override
+            public void onFailure(@NonNull IntercomError intercomError) {
+                call.reject("Intercom error : " + intercomError.getErrorMessage());
+            }
+        });
     }
 
     @PluginMethod
@@ -159,41 +240,5 @@ public class IntercomPlugin extends Plugin {
         String articleId = call.getString("id");
         Intercom.client().displayArticle(articleId);
         call.resolve();
-    }
-
-    private static Map<String, Object> mapFromJSON(JSONObject jsonObject) {
-        if (jsonObject == null) {
-            return null;
-        }
-        Map<String, Object> map = new HashMap<>();
-        Iterator<String> keysIter = jsonObject.keys();
-        while (keysIter.hasNext()) {
-            String key = keysIter.next();
-            Object value = getObject(jsonObject.opt(key));
-            if (value != null) {
-                map.put(key, value);
-            }
-        }
-        return map;
-    }
-
-    private static Object getObject(Object value) {
-        if (value instanceof JSONObject) {
-            value = mapFromJSON((JSONObject) value);
-        } else if (value instanceof JSONArray) {
-            value = listFromJSON((JSONArray) value);
-        }
-        return value;
-    }
-
-    private static List<Object> listFromJSON(JSONArray jsonArray) {
-        List<Object> list = new ArrayList<>();
-        for (int i = 0, count = jsonArray.length(); i < count; i++) {
-            Object value = getObject(jsonArray.opt(i));
-            if (value != null) {
-                list.add(value);
-            }
-        }
-        return list;
     }
 }
