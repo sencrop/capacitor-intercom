@@ -54,6 +54,10 @@ public class IntercomPlugin: CAPPlugin {
         let email = call.getString("email")
         let hmac = call.getString("userHash")
 
+        if hmac != nil {
+            Intercom.setUserHash(hmac!)
+        }
+
         if userId != nil && email != nil {
             Intercom.registerUser(withUserId: userId!, email: email!)
         } else if userId != nil {
@@ -62,10 +66,6 @@ public class IntercomPlugin: CAPPlugin {
             Intercom.registerUser(withEmail: email!)
         } else {
             call.reject("No user registered. You must supply an email, userId or both")
-        }
-
-        if hmac != nil {
-            Intercom.setUserHash(hmac!)
         }
 
         call.resolve()
