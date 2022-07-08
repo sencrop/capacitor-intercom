@@ -9,11 +9,16 @@ import Intercom
 @objc(IntercomPlugin)
 public class IntercomPlugin: CAPPlugin {
     @objc func initialize(_ call: CAPPluginCall) {
-        let apiKey = getConfigValue("ios_apiKey") as? String ?? "ADD_IN_CAPACITOR_CONFIG_JSON"
-        let appId = getConfigValue("appId") as? String ?? "ADD_IN_CAPACITOR_CONFIG_JSON"
-        Intercom.setApiKey(apiKey, forAppId: appId)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.didRegisterWithToken(notification:)), name: .capacitorDidRegisterForRemoteNotifications, object: nil)
-        call.resolve()
+        do {
+            let apiKey = getConfigValue("ios_apiKey") as? String ?? "ADD_IN_CAPACITOR_CONFIG_JSON"
+            let appId = getConfigValue("appId") as? String ?? "ADD_IN_CAPACITOR_CONFIG_JSON"
+            Intercom.setApiKey(apiKey, forAppId: appId)
+            NotificationCenter.default.addObserver(self, selector: #selector(self.didRegisterWithToken(notification:)), name: .capacitorDidRegisterForRemoteNotifications, object: nil)
+            call.resolve()
+        } catch {
+            // ⚠️ Probably does not work, no idea how to throw.
+            throw Error("Could not initialize the Intercom plugin.");
+        }
     }
 
     @objc func didRegisterWithToken(notification: NSNotification) {
