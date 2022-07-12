@@ -2,18 +2,29 @@ import Foundation
 import Capacitor
 import Intercom
 
+
+enum PluginError: Error {
+    case initialize 
+}
+
 /**
  * Please read the Capacitor iOS Plugin Development Guide
  * here: https://capacitorjs.com/docs/plugins/ios
  */
 @objc(IntercomPlugin)
 public class IntercomPlugin: CAPPlugin {
-    @objc func initialize(_ call: CAPPluginCall) {
-        let apiKey = getConfigValue("ios_apiKey") as? String ?? "ADD_IN_CAPACITOR_CONFIG_JSON"
-        let appId = getConfigValue("appId") as? String ?? "ADD_IN_CAPACITOR_CONFIG_JSON"
-        Intercom.setApiKey(apiKey, forAppId: appId)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.didRegisterWithToken(notification:)), name: .capacitorDidRegisterForRemoteNotifications, object: nil)
-        call.resolve()
+    
+
+    @objc func initialize(_ call: CAPPluginCall) throws {
+        do {
+            let apiKey = getConfigValue("ios_apiKey") as? String ?? "ADD_IN_CAPACITOR_CONFIG_JSON"
+            let appId = getConfigValue("appId") as? String ?? "ADD_IN_CAPACITOR_CONFIG_JSON"
+            Intercom.setApiKey(apiKey, forAppId: appId)
+            NotificationCenter.default.addObserver(self, selector: #selector(self.didRegisterWithToken(notification:)), name: .capacitorDidRegisterForRemoteNotifications, object: nil)
+            call.resolve()
+        } catch {
+            throw PluginError.initialize
+        }
     }
 
     @objc func didRegisterWithToken(notification: NSNotification) {
