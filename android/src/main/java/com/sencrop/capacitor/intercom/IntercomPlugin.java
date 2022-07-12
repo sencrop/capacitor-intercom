@@ -58,7 +58,7 @@ public class IntercomPlugin extends Plugin {
     }
 
     @PluginMethod
-    public void initialize(PluginCall call) {
+    public void initialize(PluginCall call) throws Exception {
         // get config
         String apiKey = getConfig().getString("android_apiKey", "ADD_IN_CAPACITOR_CONFIG_JSON");
         String appId = getConfig().getString("appId", "ADD_IN_CAPACITOR_CONFIG_JSON");
