@@ -69,7 +69,7 @@ public class IntercomPlugin extends Plugin {
             Intercom.client().handlePushMessage();
             call.resolve();
         } catch (Exception e) {
-            call.reject();
+            call.reject("Could not initialize the Intercom plugin");
             throw new Exception("Could not initialize the Intercom plugin");
         }
     }
