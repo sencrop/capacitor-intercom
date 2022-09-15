@@ -70,7 +70,7 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
     }
   }
 
-  async registerIdentifiedUser(identity: IntercomIdentity): Promise<void> {
+  async loginIdentifiedUser(identity: IntercomIdentity): Promise<void> {
     const { userId, email, userHash } = identity;
     if (window.Intercom) {
       window.Intercom('boot', {
@@ -81,7 +81,7 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
     }
   }
 
-  async registerUnidentifiedUser(): Promise<void> {
+  async loginUnidentifiedUser(): Promise<void> {
     if (window.Intercom) {
       await window.Intercom('boot', {});
     }

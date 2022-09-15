@@ -106,8 +106,8 @@ export interface IntercomCustomAttributes {
 
 export interface IntercomPlugin {
   initialize(config: IntercomSettings): void;
-  registerIdentifiedUser(identity: IntercomIdentity): Promise<void>;
-  registerUnidentifiedUser(): Promise<void>;
+  loginIdentifiedUser(identity: IntercomIdentity): Promise<void>;
+  loginUnidentifiedUser(): Promise<void>;
   updateUser(user: IntercomUser): Promise<void>;
   logout(): Promise<void>;
   logEvent(event: IntercomEvent): Promise<void>;

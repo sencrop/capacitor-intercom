@@ -75,7 +75,7 @@ public class IntercomPlugin extends Plugin {
     }
 
     @PluginMethod
-    public void registerIdentifiedUser(PluginCall call) {
+    public void loginIdentifiedUser(PluginCall call) {
         String email = call.getString("email");
         String userId = call.getString("userId");
         String userHash = call.getString("userHash");
@@ -112,7 +112,7 @@ public class IntercomPlugin extends Plugin {
     }
 
     @PluginMethod
-    public void registerUnidentifiedUser(PluginCall call) {
+    public void loginunidentifieduser(PluginCall call) {
         Intercom
             .client()
             .loginUnidentifiedUser(

@@ -14,8 +14,8 @@ npx cap sync
 <docgen-index>
 
 * [`initialize(...)`](#initialize)
-* [`registerIdentifiedUser(...)`](#registeridentifieduser)
-* [`registerUnidentifiedUser()`](#registerunidentifieduser)
+* [`loginIdentifiedUser(...)`](#loginidentifieduser)
+* [`loginUnidentifiedUser()`](#loginunidentifieduser)
 * [`updateUser(...)`](#updateuser)
 * [`logout()`](#logout)
 * [`logEvent(...)`](#logevent)
@@ -48,10 +48,10 @@ initialize(config: IntercomSettings) => void
 --------------------
 
 
-### registerIdentifiedUser(...)
+### loginIdentifiedUser(...)
 
 ```typescript
-registerIdentifiedUser(identity: IntercomIdentity) => Promise<void>
+loginIdentifiedUser(identity: IntercomIdentity) => Promise<void>
 ```
 
 | Param          | Type                                                          |
@@ -61,10 +61,10 @@ registerIdentifiedUser(identity: IntercomIdentity) => Promise<void>
 --------------------
 
 
-### registerUnidentifiedUser()
+### loginUnidentifiedUser()
 
 ```typescript
-registerUnidentifiedUser() => Promise<void>
+loginUnidentifiedUser() => Promise<void>
 ```
 
 --------------------
