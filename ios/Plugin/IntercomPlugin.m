@@ -18,4 +18,5 @@ CAP_PLUGIN(IntercomPlugin, "Intercom",
            CAP_PLUGIN_METHOD(hideMessenger, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(displayLauncher, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(hideLauncher, CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(displaySurvey, CAPPluginReturnPromise);
 )

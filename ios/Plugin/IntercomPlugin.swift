@@ -164,6 +164,16 @@ public class IntercomPlugin: CAPPlugin {
         Intercom.presentArticle(articleId)
         call.resolve()
     }
+
+    @objc func displaySurvey(_ call: CAPPluginCall) {
+        guard let surveyId = call.getString("id") else {
+            call.reject("[Intercom SDK] You must supply an surveyId to display it")
+            return
+        }
+        
+        Intercom.presentSurvey(surveyId)
+        call.resolve()
+    }
     
     @objc func hideMessenger(_ call: CAPPluginCall) {
         Intercom.hide()

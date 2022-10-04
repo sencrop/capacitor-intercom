@@ -259,4 +259,11 @@ public class IntercomPlugin extends Plugin {
         Intercom.client().displayArticle(articleId);
         call.resolve();
     }
+
+    @PluginMethod
+    public void displaySurvey(PluginCall call) {
+        String surveyId = call.getString("id");
+        Intercom.client().displaySurvey(surveyId);
+        call.resolve();
+    }
 }
