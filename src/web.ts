@@ -124,9 +124,10 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async displayArticle(_article: IntercomArticle): Promise<void> {
-    throw this.unimplemented('[Intercom] displayArticle is not implemented on web');
+  async displayArticle(article: IntercomArticle): Promise<void> {
+    if (window.Intercom) {
+      await window.Intercom('showArticle', article.id);
+    }
   }
 
   async displayMessageComposer(message?: IntercomMessage): Promise<void> {

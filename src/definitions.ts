@@ -62,6 +62,7 @@ interface IntercomCommandSignature {
   getVisitorId: () => string;
   startTour: (tourId: number) => void;
   reattach_activator: () => void;
+  showArticle: (articleId: string) => void;
 }
 
 type IntercomCommand = keyof IntercomCommandSignature;
