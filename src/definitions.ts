@@ -62,6 +62,7 @@ interface IntercomCommandSignature {
   getVisitorId: () => string;
   startTour: (tourId: number) => void;
   reattach_activator: () => void;
+  startSurvey: (surveyId: string) => void;
   showArticle: (articleId: string) => void;
 }
 
@@ -101,6 +102,10 @@ export interface IntercomArticle {
   id: string;
 }
 
+export interface IntercomSurvey {
+  id: string;
+}
+
 export interface IntercomCustomAttributes {
   attributes: Record<string, number | string | boolean>;
 }
@@ -120,4 +125,5 @@ export interface IntercomPlugin {
   displayLauncher(): Promise<void>;
   hideLauncher(): Promise<void>;
   setCustomAttributes(payload: IntercomCustomAttributes): Promise<void>;
+  displaySurvey(survey: IntercomSurvey): Promise<void>;
 }

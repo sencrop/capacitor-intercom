@@ -1,15 +1,16 @@
 import { WebPlugin } from '@capacitor/core';
 
 import type {
-  IntercomPlugin,
-  IntercomUser,
-  IntercomSettings,
-  IntercomIdentity,
-  IntercomEvent,
-  IntercomMessage,
-  IntercomCustomAttributes,
   Intercom,
   IntercomArticle,
+  IntercomCustomAttributes,
+  IntercomEvent,
+  IntercomIdentity,
+  IntercomMessage,
+  IntercomPlugin,
+  IntercomSettings,
+  IntercomSurvey,
+  IntercomUser,
 } from './definitions';
 
 declare global {
@@ -166,6 +167,12 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
       await window.Intercom('update', {
         hide_default_launcher: true,
       });
+    }
+  }
+
+  async displaySurvey(survey: IntercomSurvey): Promise<void> {
+    if (window.Intercom) {
+      await window.Intercom('startSurvey', survey.id);
     }
   }
 }

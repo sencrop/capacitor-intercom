@@ -27,6 +27,7 @@ npx cap sync
 * [`displayLauncher()`](#displaylauncher)
 * [`hideLauncher()`](#hidelauncher)
 * [`setCustomAttributes(...)`](#setcustomattributes)
+* [`displaySurvey(...)`](#displaysurvey)
 * [Interfaces](#interfaces)
 * [Type Aliases](#type-aliases)
 
@@ -185,6 +186,19 @@ setCustomAttributes(payload: IntercomCustomAttributes) => Promise<void>
 | Param         | Type                                                                          |
 | ------------- | ----------------------------------------------------------------------------- |
 | **`payload`** | <code><a href="#intercomcustomattributes">IntercomCustomAttributes</a></code> |
+
+--------------------
+
+
+### displaySurvey(...)
+
+```typescript
+displaySurvey(id: string) => Promise<void>
+```
+
+| Param    | Type                |
+| -------- | ------------------- |
+| **`id`** | <code>string</code> |
 
 --------------------
 
