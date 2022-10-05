@@ -193,12 +193,12 @@ setCustomAttributes(payload: IntercomCustomAttributes) => Promise<void>
 ### displaySurvey(...)
 
 ```typescript
-displaySurvey(id: string) => Promise<void>
+displaySurvey(survey: IntercomSurvey) => Promise<void>
 ```
 
-| Param    | Type                |
-| -------- | ------------------- |
-| **`id`** | <code>string</code> |
+| Param        | Type                                                      |
+| ------------ | --------------------------------------------------------- |
+| **`survey`** | <code><a href="#intercomsurvey">IntercomSurvey</a></code> |
 
 --------------------
 
@@ -281,6 +281,13 @@ displaySurvey(id: string) => Promise<void>
 | Prop             | Type                                                                                 |
 | ---------------- | ------------------------------------------------------------------------------------ |
 | **`attributes`** | <code><a href="#record">Record</a>&lt;string, number \| string \| boolean&gt;</code> |
+
+
+#### IntercomSurvey
+
+| Prop     | Type                |
+| -------- | ------------------- |
+| **`id`** | <code>string</code> |
 
 
 ### Type Aliases
