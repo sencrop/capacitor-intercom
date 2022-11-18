@@ -6,7 +6,9 @@ import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
 import io.intercom.android.sdk.Intercom;
+import io.intercom.android.sdk.IntercomContent;
 import io.intercom.android.sdk.IntercomError;
+import io.intercom.android.sdk.IntercomSpace;
 import io.intercom.android.sdk.IntercomStatusCallback;
 import io.intercom.android.sdk.UserAttributes;
 import io.intercom.android.sdk.identity.Registration;
@@ -214,7 +216,7 @@ public class IntercomPlugin extends Plugin {
 
     @PluginMethod
     public void displayMessenger(PluginCall call) {
-        Intercom.client().displayMessenger();
+        Intercom.client().present();
         call.resolve();
     }
 
@@ -231,7 +233,7 @@ public class IntercomPlugin extends Plugin {
 
     @PluginMethod
     public void displayHelpCenter(PluginCall call) {
-        Intercom.client().displayHelpCenter();
+        Intercom.client().present(IntercomSpace.HelpCenter);
         call.resolve();
     }
 
@@ -256,14 +258,14 @@ public class IntercomPlugin extends Plugin {
     @PluginMethod
     public void displayArticle(PluginCall call) {
         String articleId = call.getString("id");
-        Intercom.client().displayArticle(articleId);
+        Intercom.client().presentContent(new IntercomContent.Article(articleId));
         call.resolve();
     }
 
     @PluginMethod
     public void displaySurvey(PluginCall call) {
         String surveyId = call.getString("id");
-        Intercom.client().displaySurvey(surveyId);
+        Intercom.client().presentContent(new IntercomContent.Survey(surveyId));
         call.resolve();
     }
 }
