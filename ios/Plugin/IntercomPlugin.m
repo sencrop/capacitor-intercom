@@ -4,7 +4,7 @@
 // Define the plugin using the CAP_PLUGIN Macro, and
 // each method the plugin supports using the CAP_PLUGIN_METHOD macro.
 CAP_PLUGIN(IntercomPlugin, "Intercom",
-           CAP_PLUGIN_METHOD(loginUser, CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(loginIdentifiedUser, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(loginUnidentifiedUser, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(updateUser, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(initialize, CAPPluginReturnPromise);

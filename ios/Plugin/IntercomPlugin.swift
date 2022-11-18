@@ -78,7 +78,7 @@ public class IntercomPlugin: CAPPlugin {
         }
     }
     
-    @objc func loginUser(_ call: CAPPluginCall) {
+    @objc func loginIdentifiedUser(_ call: CAPPluginCall) {
         let userId = call.getString("userId")
         let email = call.getString("email")
         let hmac = call.getString("userHash")
