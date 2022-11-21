@@ -78,7 +78,7 @@ public class IntercomPlugin: CAPPlugin {
         }
     }
     
-    @objc func loginUser(_ call: CAPPluginCall) {
+    @objc func loginIdentifiedUser(_ call: CAPPluginCall) {
         let userId = call.getString("userId")
         let email = call.getString("email")
         let hmac = call.getString("userHash")
@@ -137,7 +137,7 @@ public class IntercomPlugin: CAPPlugin {
     }
     
     @objc func displayMessenger(_ call: CAPPluginCall) {
-        Intercom.presentMessenger()
+        Intercom.present()
         call.resolve()
     }
     
@@ -151,7 +151,7 @@ public class IntercomPlugin: CAPPlugin {
     }
     
     @objc func displayHelpCenter(_ call: CAPPluginCall) {
-        Intercom.presentHelpCenter()
+        Intercom.present(.helpCenter)
         call.resolve()
     }
     
@@ -161,7 +161,7 @@ public class IntercomPlugin: CAPPlugin {
             return
         }
         
-        Intercom.presentArticle(articleId)
+        Intercom.presentContent(.article(id: articleId))
         call.resolve()
     }
 
@@ -171,7 +171,7 @@ public class IntercomPlugin: CAPPlugin {
             return
         }
         
-        Intercom.presentSurvey(surveyId)
+        Intercom.presentContent(.survey(id: surveyId))
         call.resolve()
     }
     
