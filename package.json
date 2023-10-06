@@ -68,11 +68,7 @@
     "extends": "@ionic/eslint-config/recommended"
   },
   "engines": {
-    "node": "16.20.0"
-  },
-  "volta": {
-    "node": "16.20.0",
-    "npm": "8.19.4"
+    "node": ">=18.15.0"
   },
   "capacitor": {
     "ios": {
