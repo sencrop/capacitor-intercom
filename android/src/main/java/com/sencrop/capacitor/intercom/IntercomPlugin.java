@@ -114,7 +114,7 @@ public class IntercomPlugin extends Plugin {
     }
 
     @PluginMethod
-    public void loginunidentifieduser(PluginCall call) {
+    public void loginUnidentifiedUser(PluginCall call) {
         Intercom
             .client()
             .loginUnidentifiedUser(
