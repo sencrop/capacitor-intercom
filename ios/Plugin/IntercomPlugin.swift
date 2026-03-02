@@ -32,12 +32,12 @@ public class IntercomPlugin: CAPPlugin {
             return
         }
         
-        do {
-            Intercom.setDeviceToken(deviceToken) { error in
+        Intercom.setDeviceToken(deviceToken, completion: { result in
+            if case .failure(let error) = result {
                 print("[Intercom SDK] Error while setting device token")
-                print(error ?? "Unknwown error")
+                print(error)
             }
-        }
+        })
     }
     
     @objc func updateUser(_ call: CAPPluginCall) {
