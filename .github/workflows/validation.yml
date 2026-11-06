@@ -54,3 +54,27 @@ jobs:
             git diff -- README.md
             exit 1
           fi
+
+  android:
+    needs: [validation]
+    # the arm64 image ships no Android SDK
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+
+      # the Gradle project builds against node_modules/@capacitor/android
+      - name: Install dependencies
+        uses: sencrop/github-workflows/actions/pnpm-install@master
+        with:
+          # verified by the validation job of this run
+          trust_lockfile: true
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Android Lint
+        run: pnpm run check:android

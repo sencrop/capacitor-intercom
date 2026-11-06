@@ -58,6 +58,10 @@ export default defineConfig({
       },
       "vp fmt --no-error-on-unmatched-pattern",
     ],
+    "ios/**/*.swift": [
+      "xcrun swift-format format --in-place",
+      "xcrun swift-format lint --strict",
+    ],
   },
   fmt: {
     arrowParens: "always",

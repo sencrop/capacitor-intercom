@@ -6,4 +6,7 @@ Run every command from a devenv shell (`devenv shell -- <command>`): Node.js and
 - Format, lint and type check: `pnpm run check`, and `pnpm run check --fix` to apply the fixes
 - Build: `pnpm run build` (it also regenerates the API section of `README.md`)
 
-Native code (`android/`, `ios/`) is neither formatted nor linted by `pnpm run check`.
+Native code is outside `pnpm run check`:
+
+- `pnpm run check:ios` lints the Swift code with swift-format (shipped with Xcode); `xcrun swift-format format --in-place --recursive ios/Plugin ios/PluginTests` fixes the formatting. The pre-commit hook formats and lints the staged Swift files; CI does not check them
+- `pnpm run check:android` runs Android Lint (needs JDK 21 and the Android SDK)

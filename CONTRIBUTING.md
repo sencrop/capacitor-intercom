@@ -33,6 +33,10 @@ This is useful to run in CI to verify that the plugin builds for all platforms.
 
 Check formatting, lint and types with [Vite+](https://viteplus.dev/). `pnpm run check --fix` applies the formatting and lint fixes. The pre-commit hook does the same on staged files.
 
+#### `pnpm run check:ios` / `pnpm run check:android`
+
+Lint the native code: swift-format (shipped with Xcode, configured in `.swift-format`) for Swift, Android Lint for the Android library (needs JDK 21 and the Android SDK). `xcrun swift-format format --in-place --recursive ios/Plugin ios/PluginTests` fixes the Swift formatting. The pre-commit hook formats and lints the staged Swift files; CI only runs Android Lint.
+
 ## Publishing
 
 There is a `prepublishOnly` hook in `package.json` which prepares the plugin before publishing, so all you need to do is run:

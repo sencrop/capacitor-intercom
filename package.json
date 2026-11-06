@@ -37,7 +37,9 @@
     "watch": "vp pack --watch",
     "prepublishOnly": "pnpm run build",
     "prepare": "vp config",
-    "check": "vp check"
+    "check": "vp check",
+    "check:android": "cd android && ./gradlew lint",
+    "check:ios": "xcrun swift-format lint --strict --recursive ios/Plugin ios/PluginTests"
   },
   "devDependencies": {
     "@capacitor/android": "^8.0.0",

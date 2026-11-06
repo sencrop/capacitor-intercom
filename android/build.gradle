@@ -35,7 +35,7 @@ android {
         }
     }
     lintOptions {
-        abortOnError = false
+        abortOnError = true
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_21
