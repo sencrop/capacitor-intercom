@@ -102,7 +102,7 @@ export interface Intercom {
 ///// ENDOF: Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
 export interface IntercomIdentity {
-  userId: string;
+  userId?: string;
   email?: string;
   userHash?: string;
 }
