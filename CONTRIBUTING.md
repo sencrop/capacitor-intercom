@@ -39,10 +39,13 @@ Lint the native code: swift-format (shipped with Xcode, configured in `.swift-fo
 
 ## Publishing
 
-There is a `prepublishOnly` hook in `package.json` which prepares the plugin before publishing, so all you need to do is run:
+Releases are automated with [release-please](https://github.com/googleapis/release-please). Every push to `master` updates a `chore: release <version>` pull request that bumps the version and the changelog from the [Conventional Commits](https://www.conventionalcommits.org/) titles. Merging it tags the release, creates the GitHub release and stages the package on npm from the `Release` workflow (npm trusted publishing, no token). The version is not live yet: a maintainer approves it, with 2FA, in one of two ways:
 
-```shell
-pnpm publish
-```
+- on npmjs.com, **Staged Packages** tab of [the package page](https://www.npmjs.com/package/@sencrop/capacitor-intercom), **Approve** button (enabled once npm has scanned the package);
+- from a terminal, outside this repo (npm refuses to run here): `npm stage list @sencrop/capacitor-intercom`, then `npm stage approve <stage-id>`.
+
+The summary of the `Release` workflow run recalls these steps.
+
+To publish an existing tag again, run the `Release` workflow manually with that tag.
 
 > **Note**: The [`files`](https://docs.npmjs.com/cli/v7/configuring-npm/package-json#files) array in `package.json` specifies which files get published. If you rename files/directories or add files elsewhere, you may need to update it.
