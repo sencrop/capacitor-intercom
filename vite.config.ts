@@ -80,7 +80,7 @@ export default defineConfig({
     htmlWhitespaceSensitivity: "css",
     proseWrap: "preserve",
     vueIndentScriptAndStyle: false,
-    ignorePatterns: ["node_modules", "dist", "android", "ios"],
+    ignorePatterns: ["node_modules", "dist", "android", "ios", "CHANGELOG.md"],
   },
   lint: {
     plugins: ["eslint", "typescript", "import", "promise"],
