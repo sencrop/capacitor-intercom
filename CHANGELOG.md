@@ -1,5 +1,30 @@
 # Changelog
 
+## [11.0.0](https://github.com/sencrop/capacitor-intercom/compare/v10.0.2...v11.0.0) (2026-11-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* **android:** the Android plugin exposes Intercom Android 18 (`api` dependency); apps remove their own Intercom artifact. Intercom 18 migrates its local storage one way (DataStore, going back to 17 loses the local Intercom state) and requires minSdk 23. Intercom iOS is bounded to ~> 19.5. handlePushMessage() is no longer called.
+
+### Bug fixes
+
+* align the iOS, Android and web behaviors ([#46](https://github.com/sencrop/capacitor-intercom/issues/46)) ([2e10d8d](https://github.com/sencrop/capacitor-intercom/commit/2e10d8dc03d99c292b4070b3a2c0aead7305b373))
+* **android:** expose the Intercom SDK so the app runs a single Intercom version ([#50](https://github.com/sencrop/capacitor-intercom/issues/50)) ([71f5f17](https://github.com/sencrop/capacitor-intercom/commit/71f5f17d7d710a07f6ae82163ac5d0e9e704d35d))
+* **ios:** put the Intercom error in the rejection message ([#45](https://github.com/sencrop/capacitor-intercom/issues/45)) ([017096e](https://github.com/sencrop/capacitor-intercom/commit/017096e83dbbf904294ae5363be859dcbe9ac625))
+* pin the iOS Intercom SDK and update the Android one to 18 ([#47](https://github.com/sencrop/capacitor-intercom/issues/47)) ([850ef1e](https://github.com/sencrop/capacitor-intercom/commit/850ef1ef7b1df85c235be8851655db3a8e3f888c))
+
+
+### Documentation
+
+* explain how the app wires Intercom push notifications ([#49](https://github.com/sencrop/capacitor-intercom/issues/49)) ([cee39d5](https://github.com/sencrop/capacitor-intercom/commit/cee39d582fc3aef440b8d48795b732c716da1e17))
+* link the npm staged packages page ([#42](https://github.com/sencrop/capacitor-intercom/issues/42)) ([94e9708](https://github.com/sencrop/capacitor-intercom/commit/94e970865f26df0c3cb62c6768e494d9c8ea1b13))
+
+
+### CI configuration
+
+* post releases to #deployment-updates-prod ([#44](https://github.com/sencrop/capacitor-intercom/issues/44)) ([1e97556](https://github.com/sencrop/capacitor-intercom/commit/1e975560e42b9b785e24e78b3f0df752c2c76dc2))
+
 ## [10.0.2](https://github.com/sencrop/capacitor-intercom/compare/v10.0.1...v10.0.2) (2026-11-06)
 
 
