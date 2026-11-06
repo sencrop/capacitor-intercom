@@ -86,7 +86,6 @@ public class IntercomPlugin extends Plugin {
 
         try {
             Intercom.initialize(this.getActivity().getApplication(), apiKey, appId);
-            Intercom.client().handlePushMessage();
             call.resolve();
         } catch (Exception e) {
             call.reject("[Intercom SDK] Could not initialize the Intercom plugin", e);
