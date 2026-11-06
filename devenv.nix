@@ -4,8 +4,13 @@ let
   nodeMajor = lib.head (builtins.match "[^0-9]*([0-9]+).*" devNode);
 in
 {
-  # Java formatter of the Android plugin (pre-commit hook, pnpm run check:android)
   packages = [ pkgs.google-java-format ];
+
+  # same JDK as google-java-format's, so it adds nothing to download
+  languages.java = {
+    enable = true;
+    jdk.package = pkgs.jdk21;
+  };
 
   languages.javascript = {
     enable = true;
