@@ -1,0 +1,14 @@
+engineStrict: true
+strictPeerDependencies: true
+savePrefix: ""
+
+minimumReleaseAge: 1440
+minimumReleaseAgeExclude:
+  - "@sencrop/*"
+trustPolicy: no-downgrade
+trustPolicyExcludePrune: true
+# exact versions audited as false positives of no-downgrade
+trustPolicyExclude: []
+
+allowBuilds:
+  swiftlint: false
