@@ -22,6 +22,9 @@ declare global {
   }
 }
 
+const isValidId = (id: unknown): boolean =>
+  Number.isInteger(id) || (typeof id === "string" && id !== "");
+
 export class IntercomWeb extends WebPlugin implements IntercomPlugin {
   initialize(config?: IntercomSettings): void {
     const app_id = config?.app_id;
@@ -141,7 +144,7 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
   }
 
   async displayArticle(article: IntercomArticle): Promise<void> {
-    if (article?.id == null || String(article.id) === "") {
+    if (!isValidId(article?.id)) {
       throw new Error(
         "[Intercom SDK] You must supply an articleId to display it"
       );
@@ -191,7 +194,7 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
   }
 
   async displaySurvey(survey: IntercomSurvey): Promise<void> {
-    if (survey?.id == null || String(survey.id) === "") {
+    if (!isValidId(survey?.id)) {
       throw new Error(
         "[Intercom SDK] You must supply a surveyId to display it"
       );
