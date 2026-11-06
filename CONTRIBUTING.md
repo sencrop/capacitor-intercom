@@ -41,7 +41,7 @@ Lint the native code: swift-format (shipped with Xcode, configured in `.swift-fo
 
 Releases are automated with [release-please](https://github.com/googleapis/release-please). Every push to `master` updates a `chore: release <version>` pull request that bumps the version and the changelog from the [Conventional Commits](https://www.conventionalcommits.org/) titles. Merging it tags the release, creates the GitHub release and stages the package on npm from the `Release - publish` workflow, dispatched by `Release - prepare` (npm trusted publishing, no token). `Release - publish` runs are posted to #deployment-updates-prod by the GitHub Slack app. The version is not live yet: a maintainer approves it, with 2FA, in one of two ways:
 
-- on npmjs.com, `https://www.npmjs.com/settings/<npm-username>/staged-packages` (your own account settings, not the package page), **Approve** button (enabled once npm has scanned the package);
+- on npmjs.com, in the **Staged Packages** tab of your account settings (not the package page), `https://www.npmjs.com/settings/<your-npm-username>/staged-packages`: **Approve** button (enabled once npm has scanned the package);
 - from a terminal, outside this repo (npm refuses to run here): `npm stage list @sencrop/capacitor-intercom`, then `npm stage approve <stage-id>`.
 
 The summary of the `Release - publish` run recalls these steps.
