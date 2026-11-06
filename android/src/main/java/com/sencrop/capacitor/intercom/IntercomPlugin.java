@@ -70,11 +70,13 @@ public class IntercomPlugin extends Plugin {
     // the TypeScript API types the id as a number, which call.getString() reads as null
     private static String getId(PluginCall call) {
         Object id = call.getData().opt("id");
-        if (id == null || id == JSONObject.NULL) {
-            return null;
+        if (id instanceof Integer || id instanceof Long) {
+            return String.valueOf(id);
         }
-        String value = String.valueOf(id);
-        return value.isEmpty() ? null : value;
+        if (id instanceof String && !((String) id).isEmpty()) {
+            return (String) id;
+        }
+        return null;
     }
 
     @PluginMethod
