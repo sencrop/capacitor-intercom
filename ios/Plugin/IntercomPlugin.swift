@@ -12,17 +12,14 @@ enum PluginError: Error {
 public class IntercomPlugin: CAPPlugin {
 
     @objc func initialize(_ call: CAPPluginCall) {
-        do {
-            let apiKey = getConfigValue("ios_apiKey") as? String ?? "ADD_IN_CAPACITOR_CONFIG_JSON"
-            let appId = getConfigValue("appId") as? String ?? "ADD_IN_CAPACITOR_CONFIG_JSON"
-            Intercom.setApiKey(apiKey, forAppId: appId)
-            NotificationCenter.default.addObserver(
-                self, selector: #selector(self.didRegisterWithToken(notification:)),
-                name: .capacitorDidRegisterForRemoteNotifications, object: nil)
-            call.resolve()
-        } catch {
-            call.reject("[Intercom SDK] Could not initialize the Intercom plugin")
-        }
+        let config = getConfig()
+        let apiKey = config.getString("ios_apiKey") ?? "ADD_IN_CAPACITOR_CONFIG_JSON"
+        let appId = config.getString("appId") ?? "ADD_IN_CAPACITOR_CONFIG_JSON"
+        Intercom.setApiKey(apiKey, forAppId: appId)
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(self.didRegisterWithToken(notification:)),
+            name: .capacitorDidRegisterForRemoteNotifications, object: nil)
+        call.resolve()
     }
 
     @objc func didRegisterWithToken(notification: NSNotification) {
