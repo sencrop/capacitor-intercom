@@ -76,5 +76,19 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      - name: Android Lint
+      - name: Install google-java-format
+        env:
+          # same version as devenv's nixpkgs
+          VERSION: 2.0.0
+          SHA256: c351f587e6dd1f11836be7296894ea2ab3bd91847dbd14101f4f04d390380fe9
+        run: |
+          bin="$RUNNER_TEMP/bin"
+          mkdir -p "$bin"
+          curl -fsSL -o "$bin/google-java-format" \
+            "https://github.com/google/google-java-format/releases/download/v$VERSION/google-java-format_linux-x86-64"
+          echo "$SHA256  $bin/google-java-format" | sha256sum --check
+          chmod +x "$bin/google-java-format"
+          echo "$bin" >> "$GITHUB_PATH"
+
+      - name: Java format and Android Lint
         run: pnpm run check:android

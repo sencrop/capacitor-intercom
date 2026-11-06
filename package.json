@@ -38,7 +38,7 @@
     "prepublishOnly": "pnpm run build",
     "prepare": "vp config",
     "check": "vp check",
-    "check:android": "cd android && ./gradlew lint",
+    "check:android": "google-java-format --aosp --dry-run --set-exit-if-changed $(find android/src -name '*.java') && cd android && ./gradlew lint",
     "check:ios": "xcrun swift-format lint --strict --recursive ios/Plugin ios/PluginTests"
   },
   "devDependencies": {

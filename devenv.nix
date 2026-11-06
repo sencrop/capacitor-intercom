@@ -4,6 +4,9 @@ let
   nodeMajor = lib.head (builtins.match "[^0-9]*([0-9]+).*" devNode);
 in
 {
+  # Java formatter of the Android plugin (pre-commit hook, pnpm run check:android)
+  packages = [ pkgs.google-java-format ];
+
   languages.javascript = {
     enable = true;
     # slim: no npm/npx/corepack in the PATH, pnpm is the only package manager

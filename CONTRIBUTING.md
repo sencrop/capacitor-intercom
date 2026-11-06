@@ -35,7 +35,7 @@ Check formatting, lint and types with [Vite+](https://viteplus.dev/). `pnpm run 
 
 #### `pnpm run check:ios` / `pnpm run check:android`
 
-Lint the native code: swift-format (shipped with Xcode, configured in `.swift-format`) for Swift, Android Lint for the Android library (needs JDK 21 and the Android SDK). `xcrun swift-format format --in-place --recursive ios/Plugin ios/PluginTests` fixes the Swift formatting. The pre-commit hook formats and lints the staged Swift files; CI only runs Android Lint.
+Lint the native code: swift-format (shipped with Xcode, configured in `.swift-format`) for Swift, google-java-format (AOSP style, provided by devenv) and Android Lint (needs JDK 21 and the Android SDK) for the Android library. `xcrun swift-format format --in-place --recursive ios/Plugin ios/PluginTests` fixes the Swift formatting. The pre-commit hook formats the staged Swift and Java files and lints the Swift ones; CI runs `check:android` only.
 
 ## Publishing
 

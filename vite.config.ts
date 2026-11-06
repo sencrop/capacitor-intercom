@@ -58,6 +58,7 @@ export default defineConfig({
       },
       "vp fmt --no-error-on-unmatched-pattern",
     ],
+    "android/**/*.java": "google-java-format --aosp --replace",
     "ios/**/*.swift": [
       "xcrun swift-format format --in-place",
       "xcrun swift-format lint --strict",
