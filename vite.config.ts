@@ -6,7 +6,7 @@ export default defineConfig({
   staged: {
     // One glob per file: lint-staged runs globs concurrently, so a file matched
     // by two of them would be fixed by the linter and the formatter at once.
-    "{*,src/**/*}": [
+    "{*,{src,.github}/**/*}": [
       (files) => {
         const lintable = files.filter((file) => LINTABLE_FILE.test(file));
         return lintable.length > 0

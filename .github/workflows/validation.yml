@@ -1,0 +1,56 @@
+---
+name: Validation
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validation:
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # on a pull request, HEAD^1 is the base branch
+          fetch-depth: 2
+
+      - name: Detect dependency changes
+        id: dependencies
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          if [ "$BASE_REF" = "$DEFAULT_BRANCH" ] \
+            && git diff --quiet HEAD^1 HEAD -- package.json pnpm-lock.yaml pnpm-workspace.yaml; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install dependencies
+        uses: sencrop/github-workflows/actions/pnpm-install@master
+        with:
+          dedupe_check: true
+          trust_lockfile: ${{ github.event_name == 'pull_request' && steps.dependencies.outputs.changed == 'false' }}
+
+      - name: Check format, lint and types
+        run: pnpm run check
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Check that the README API section is up to date
+        run: |
+          if ! git diff --quiet -- README.md; then
+            echo "::error::README.md differs from the docgen output: run pnpm run build and commit README.md"
+            git diff -- README.md
+            exit 1
+          fi
