@@ -57,7 +57,7 @@ public class IntercomPlugin: CAPPlugin {
             case .success:
                 call.resolve()
             case .failure(let error):
-                call.reject("[Intercom SDK] Error while updating user: ", error.localizedDescription)
+                call.reject("[Intercom SDK] Error while updating user: \(error.localizedDescription)", nil, error)
             }
         }
     }
@@ -73,7 +73,8 @@ public class IntercomPlugin: CAPPlugin {
             case .success:
                 call.resolve()
             case .failure(let error):
-                call.reject("[Intercom SDK] Error while setting custom attribute(s): ", error.localizedDescription)
+                call.reject(
+                    "[Intercom SDK] Error while setting custom attribute(s): \(error.localizedDescription)", nil, error)
             }
         }
     }
@@ -101,7 +102,7 @@ public class IntercomPlugin: CAPPlugin {
             case .success:
                 call.resolve()
             case .failure(let error):
-                call.reject("[Intercom SDK] Error while login user: ", error.localizedDescription)
+                call.reject("[Intercom SDK] Error while login user: \(error.localizedDescription)", nil, error)
             }
         }
     }
@@ -112,7 +113,8 @@ public class IntercomPlugin: CAPPlugin {
             case .success:
                 call.resolve()
             case .failure(let error):
-                call.reject("[Intercom SDK] Error while login unidentified user: ", error.localizedDescription)
+                call.reject(
+                    "[Intercom SDK] Error while login unidentified user: \(error.localizedDescription)", nil, error)
             }
         }
     }
