@@ -1,10 +1,12 @@
 package com.sencrop.capacitor.intercom;
 
 import androidx.annotation.NonNull;
+
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
+
 import io.intercom.android.sdk.Intercom;
 import io.intercom.android.sdk.IntercomContent;
 import io.intercom.android.sdk.IntercomError;
@@ -12,13 +14,15 @@ import io.intercom.android.sdk.IntercomSpace;
 import io.intercom.android.sdk.IntercomStatusCallback;
 import io.intercom.android.sdk.UserAttributes;
 import io.intercom.android.sdk.identity.Registration;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 @CapacitorPlugin(name = "Intercom")
 public class IntercomPlugin extends Plugin {
@@ -95,37 +99,37 @@ public class IntercomPlugin extends Plugin {
             registration = registration.withUserId(userId);
         }
 
-        Intercom.client().loginIdentifiedUser(
-            registration,
-            new IntercomStatusCallback() {
-                @Override
-                public void onSuccess() {
-                    call.resolve();
-                }
+        Intercom.client()
+                .loginIdentifiedUser(
+                        registration,
+                        new IntercomStatusCallback() {
+                            @Override
+                            public void onSuccess() {
+                                call.resolve();
+                            }
 
-                @Override
-                public void onFailure(@NonNull IntercomError intercomError) {
-                    call.reject("Intercom error : " + intercomError.getErrorMessage());
-                }
-            }
-        );
+                            @Override
+                            public void onFailure(@NonNull IntercomError intercomError) {
+                                call.reject("Intercom error : " + intercomError.getErrorMessage());
+                            }
+                        });
     }
 
     @PluginMethod
     public void loginUnidentifiedUser(PluginCall call) {
-        Intercom.client().loginUnidentifiedUser(
-            new IntercomStatusCallback() {
-                @Override
-                public void onSuccess() {
-                    call.resolve();
-                }
+        Intercom.client()
+                .loginUnidentifiedUser(
+                        new IntercomStatusCallback() {
+                            @Override
+                            public void onSuccess() {
+                                call.resolve();
+                            }
 
-                @Override
-                public void onFailure(@NonNull IntercomError intercomError) {
-                    call.reject("Intercom error : " + intercomError.getErrorMessage());
-                }
-            }
-        );
+                            @Override
+                            public void onFailure(@NonNull IntercomError intercomError) {
+                                call.reject("Intercom error : " + intercomError.getErrorMessage());
+                            }
+                        });
     }
 
     @PluginMethod
@@ -135,26 +139,27 @@ public class IntercomPlugin extends Plugin {
         String name = call.getString("name");
         String language = call.getString("language");
 
-        UserAttributes userAttributes = new UserAttributes.Builder()
-            .withName(name)
-            .withEmail(email)
-            .withPhone(phone)
-            .withLanguageOverride(language)
-            .build();
-        Intercom.client().updateUser(
-            userAttributes,
-            new IntercomStatusCallback() {
-                @Override
-                public void onSuccess() {
-                    call.resolve();
-                }
+        UserAttributes userAttributes =
+                new UserAttributes.Builder()
+                        .withName(name)
+                        .withEmail(email)
+                        .withPhone(phone)
+                        .withLanguageOverride(language)
+                        .build();
+        Intercom.client()
+                .updateUser(
+                        userAttributes,
+                        new IntercomStatusCallback() {
+                            @Override
+                            public void onSuccess() {
+                                call.resolve();
+                            }
 
-                @Override
-                public void onFailure(@NonNull IntercomError intercomError) {
-                    call.reject("Intercom error : " + intercomError.getErrorMessage());
-                }
-            }
-        );
+                            @Override
+                            public void onFailure(@NonNull IntercomError intercomError) {
+                                call.reject("Intercom error : " + intercomError.getErrorMessage());
+                            }
+                        });
     }
 
     @PluginMethod
@@ -170,20 +175,20 @@ public class IntercomPlugin extends Plugin {
         }
 
         UserAttributes userAttributes = userAttributesBuilder.build();
-        Intercom.client().updateUser(
-            userAttributes,
-            new IntercomStatusCallback() {
-                @Override
-                public void onSuccess() {
-                    call.resolve();
-                }
+        Intercom.client()
+                .updateUser(
+                        userAttributes,
+                        new IntercomStatusCallback() {
+                            @Override
+                            public void onSuccess() {
+                                call.resolve();
+                            }
 
-                @Override
-                public void onFailure(@NonNull IntercomError intercomError) {
-                    call.reject("Intercom error : " + intercomError.getErrorMessage());
-                }
-            }
-        );
+                            @Override
+                            public void onFailure(@NonNull IntercomError intercomError) {
+                                call.reject("Intercom error : " + intercomError.getErrorMessage());
+                            }
+                        });
     }
 
     @PluginMethod

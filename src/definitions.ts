@@ -39,7 +39,11 @@ export interface IntercomSettings {
   avatar?: IntercomAvatar | undefined;
 
   // Custom attributes
-  [custom_attribute: string]: IntercomCompany | IntercomCompany[] | IntercomAvatar | IntercomCustomAttribute;
+  [custom_attribute: string]:
+    | IntercomCompany
+    | IntercomCompany[]
+    | IntercomAvatar
+    | IntercomCustomAttribute;
 }
 
 interface IntercomCompany {
@@ -58,7 +62,7 @@ interface IntercomCompany {
 }
 
 interface IntercomAvatar {
-  type: 'avatar';
+  type: "avatar";
   image_url: string;
 }
 
@@ -76,6 +80,7 @@ interface IntercomCommandSignature {
   onShow: (callback: () => void) => void;
   onUnreadCountChange: (callback: (unreadCount: number) => void) => void;
   onActivatorClick: (callback: () => void) => void;
+  // oxlint-disable-next-line typescript/no-explicit-any -- published type, kept as is
   trackEvent: (tag?: string, metadata?: any) => void;
   getVisitorId: () => string;
   startTour: (tourId: number) => void;
@@ -111,6 +116,7 @@ export interface IntercomUser {
 
 export interface IntercomEvent {
   name: string;
+  // oxlint-disable-next-line typescript/no-explicit-any -- published type, kept as is
   data?: any;
 }
 

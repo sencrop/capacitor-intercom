@@ -1,0 +1,94 @@
+---
+name: Validation
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validation:
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # on a pull request, HEAD^1 is the base branch
+          fetch-depth: 2
+
+      - name: Detect dependency changes
+        id: dependencies
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          if [ "$BASE_REF" = "$DEFAULT_BRANCH" ] \
+            && git diff --quiet HEAD^1 HEAD -- package.json pnpm-lock.yaml pnpm-workspace.yaml; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install dependencies
+        uses: sencrop/github-workflows/actions/pnpm-install@master
+        with:
+          dedupe_check: true
+          trust_lockfile: ${{ github.event_name == 'pull_request' && steps.dependencies.outputs.changed == 'false' }}
+
+      - name: Check format, lint and types
+        run: pnpm run check
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Check that the README API section is up to date
+        run: |
+          if ! git diff --quiet -- README.md; then
+            echo "::error::README.md differs from the docgen output: run pnpm run build and commit README.md"
+            git diff -- README.md
+            exit 1
+          fi
+
+  android:
+    needs: [validation]
+    # the arm64 image ships no Android SDK
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+
+      # the Gradle project builds against node_modules/@capacitor/android
+      - name: Install dependencies
+        uses: sencrop/github-workflows/actions/pnpm-install@master
+        with:
+          # verified by the validation job of this run
+          trust_lockfile: true
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Install google-java-format
+        env:
+          # same version as devenv's nixpkgs
+          VERSION: 2.0.0
+          SHA256: c351f587e6dd1f11836be7296894ea2ab3bd91847dbd14101f4f04d390380fe9
+        run: |
+          bin="$RUNNER_TEMP/bin"
+          mkdir -p "$bin"
+          curl -fsSL -o "$bin/google-java-format" \
+            "https://github.com/google/google-java-format/releases/download/v$VERSION/google-java-format_linux-x86-64"
+          echo "$SHA256  $bin/google-java-format" | sha256sum --check
+          chmod +x "$bin/google-java-format"
+          echo "$bin" >> "$GITHUB_PATH"
+
+      - name: Java format and Android Lint
+        run: pnpm run check:android

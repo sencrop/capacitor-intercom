@@ -2,10 +2,20 @@
   "name": "@sencrop/capacitor-intercom",
   "version": "10.0.1",
   "description": "Intercom Plugin for Capacitor",
-  "main": "dist/plugin.cjs.js",
-  "module": "dist/esm/index.js",
-  "types": "dist/esm/index.d.ts",
-  "unpkg": "dist/plugin.js",
+  "keywords": [
+    "capacitor",
+    "native",
+    "plugin"
+  ],
+  "bugs": {
+    "url": "https://github.com/sencrop/capacitor-intercom/issues"
+  },
+  "license": "MIT",
+  "author": "Sencrop",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sencrop/capacitor-intercom.git"
+  },
   "files": [
     "android/src/main/",
     "android/build.gradle",
@@ -13,59 +23,46 @@
     "ios/Plugin/",
     "SencropCapacitorIntercom.podspec"
   ],
-  "author": "Sencrop",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/sencrop/capacitor-intercom.git"
-  },
-  "bugs": {
-    "url": "https://github.com/sencrop/capacitor-intercom/issues"
-  },
-  "keywords": [
-    "capacitor",
-    "plugin",
-    "native"
-  ],
+  "main": "dist/plugin.cjs.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
+  "unpkg": "dist/plugin.js",
   "scripts": {
-    "verify": "npm run verify:ios && npm run verify:android && npm run verify:web",
+    "verify": "pnpm run verify:ios && pnpm run verify:android && pnpm run verify:web",
     "verify:ios": "cd ios && pod install && xcodebuild clean build test -workspace Plugin.xcworkspace -scheme Plugin -destination \"platform=iOS Simulator,name=iPhone 14\" && cd ..",
     "verify:android": "cd android && ./gradlew clean build test && cd ..",
-    "verify:web": "npm run build",
-    "lint": "npm run eslint && npm run prettier -- --check && npm run swiftlint -- lint",
-    "fmt": "npm run eslint -- --fix && npm run prettier -- --write && npm run swiftlint -- autocorrect --format",
-    "eslint": "eslint . --ext ts",
-    "prettier": "prettier \"**/*.{css,html,ts,js,java}\" --plugin=prettier-plugin-java",
-    "swiftlint": "node-swiftlint",
-    "docgen": "docgen --api IntercomPlugin --output-readme README.md --output-json dist/docs.json",
-    "build": "npm run clean && npm run docgen && tsc && rollup -c rollup.config.mjs",
-    "clean": "rimraf ./dist",
-    "watch": "tsc --watch",
-    "prepublishOnly": "npm run build"
+    "verify:web": "pnpm run build",
+    "docgen": "docgen --project tsconfig.docgen.json --api IntercomPlugin --output-readme README.md --output-json dist/docs.json && vp fmt README.md",
+    "build": "vp pack && pnpm run docgen",
+    "watch": "vp pack --watch",
+    "prepublishOnly": "pnpm run build",
+    "prepare": "vp config",
+    "check": "vp check",
+    "check:android": "google-java-format --aosp --dry-run --set-exit-if-changed $(find android/src -name '*.java') && cd android && ./gradlew lint",
+    "check:ios": "xcrun swift-format lint --strict --recursive ios/Plugin ios/PluginTests"
   },
   "devDependencies": {
     "@capacitor/android": "^8.0.0",
     "@capacitor/core": "^8.0.0",
     "@capacitor/docgen": "^0.3.1",
     "@capacitor/ios": "^8.0.0",
-    "@ionic/eslint-config": "^0.4.0",
-    "@ionic/prettier-config": "^4.0.0",
-    "@ionic/swiftlint-config": "^2.0.0",
-    "eslint": "^8.57.1",
-    "prettier": "^3.6.2",
-    "prettier-plugin-java": "^2.7.7",
-    "rimraf": "^6.1.0",
-    "rollup": "^4.53.2",
-    "swiftlint": "^2.0.0",
-    "typescript": "^5.9.3"
+    "typescript": "7.0.2",
+    "vite-plus": "catalog:"
   },
   "peerDependencies": {
     "@capacitor/core": ">=8.0.0"
   },
-  "prettier": "@ionic/prettier-config",
-  "swiftlint": "@ionic/swiftlint-config",
-  "eslintConfig": {
-    "extends": "@ionic/eslint-config/recommended"
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.11.2",
+      "onFail": "download"
+    },
+    "runtime": {
+      "name": "node",
+      "version": "^24.21.0",
+      "onFail": "error"
+    }
   },
   "engines": {
     "node": ">=18.15.0"

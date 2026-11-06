@@ -1,0 +1,15 @@
+---
+name: PR title validation
+
+# squash merges use the PR title as commit message, which release-please reads
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+jobs:
+  conventional_title:
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      contents: read
+    steps:
+      - uses: sencrop/github-workflows/actions/lint-pr-title@master

@@ -1,0 +1,69 @@
+---
+name: Release
+
+on:
+  push:
+    branches: [master]
+  # publishes an existing release tag, e.g. after a publish failure
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag to publish (e.g. v10.1.0)
+        required: true
+
+jobs:
+  release-please:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    outputs:
+      release_created: ${{ steps.release_please.outputs.release_created }}
+      tag_name: ${{ steps.release_please.outputs.tag_name }}
+    steps:
+      # GITHUB_TOKEN: the org bot credentials are not shared with public repos.
+      # A release created with it triggers no workflow, hence the publish job below
+      # instead of a workflow on `release: published`.
+      - name: Run release-please
+        id: release_please
+        uses: googleapis/release-please-action@v4
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  publish:
+    needs: [release-please]
+    if: always() && (needs.release-please.outputs.release_created == 'true' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      contents: read
+      id-token: write # npm trusted publishing (OIDC), bound to this workflow's file name
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.tag || needs.release-please.outputs.tag_name }}
+
+      - name: Install dependencies
+        uses: sencrop/github-workflows/actions/pnpm-install@master
+
+      # the release PR, opened with GITHUB_TOKEN, runs no validation workflow,
+      # and the push validation of this commit runs in parallel
+      - name: Check format, lint and types
+        run: pnpm run check
+
+      - name: Pack
+        run: |
+          pnpm run build
+          pnpm pack --pack-destination "$RUNNER_TEMP/package"
+
+      # The trusted publisher only allows staging: a maintainer approves the
+      # version with 2FA on npmjs.com before it goes live. pnpm cannot stage, and
+      # npm refuses to run in this repo (devEngines asks for pnpm), hence the
+      # tarball published from outside the checkout.
+      - name: Stage on npm
+        working-directory: ${{ runner.temp }}/package
+        run: |
+          npm stage publish ./*.tgz
+          echo "Staged: approve it with 2FA in the **Staged Packages** tab of https://www.npmjs.com/package/@sencrop/capacitor-intercom, or with \`npm stage approve <stage-id>\` (\`npm stage list @sencrop/capacitor-intercom\`)." >> "$GITHUB_STEP_SUMMARY"

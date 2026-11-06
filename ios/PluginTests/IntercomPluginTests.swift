@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import Plugin
 
 class IntercomTests: XCTestCase {
