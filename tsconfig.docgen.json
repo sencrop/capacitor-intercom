@@ -1,4 +1,4 @@
 {
-  "compilerOptions": {},
+  "compilerOptions": { "strict": true },
   "files": ["src/index.ts"]
 }

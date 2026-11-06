@@ -13,12 +13,6 @@ This guide provides instructions for contributing to this Capacitor plugin.
     devenv shell -- pnpm install
     ```
 
-1. Install SwiftLint if you're on macOS.
-
-    ```shell
-    brew install swiftlint
-    ```
-
 ### Scripts
 
 #### `pnpm run build`
@@ -35,11 +29,9 @@ Build and validate the web and native projects.
 
 This is useful to run in CI to verify that the plugin builds for all platforms.
 
-#### `pnpm run lint` / `pnpm run fmt`
+#### `pnpm run check`
 
-Check formatting and code quality, autoformat/autofix if possible.
-
-This template is integrated with ESLint, Prettier, and SwiftLint. Using these tools is completely optional, but the [Capacitor Community](https://github.com/capacitor-community/) strives to have consistent code style and structure for easier cooperation.
+Check formatting, lint and types with [Vite+](https://viteplus.dev/). `pnpm run check --fix` applies the formatting and lint fixes. The pre-commit hook does the same on staged files.
 
 ## Publishing
 

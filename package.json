@@ -32,40 +32,26 @@
     "verify:ios": "cd ios && pod install && xcodebuild clean build test -workspace Plugin.xcworkspace -scheme Plugin -destination \"platform=iOS Simulator,name=iPhone 14\" && cd ..",
     "verify:android": "cd android && ./gradlew clean build test && cd ..",
     "verify:web": "pnpm run build",
-    "lint": "pnpm run eslint && pnpm run prettier --check && pnpm run swiftlint lint",
-    "fmt": "pnpm run eslint --fix && pnpm run prettier --write && pnpm run swiftlint autocorrect --format",
-    "eslint": "eslint . --ext ts",
-    "prettier": "prettier \"**/*.{css,html,ts,js,java}\" --plugin=prettier-plugin-java",
-    "swiftlint": "node-swiftlint",
-    "docgen": "docgen --project tsconfig.docgen.json --api IntercomPlugin --output-readme README.md --output-json dist/docs.json",
+    "docgen": "docgen --project tsconfig.docgen.json --api IntercomPlugin --output-readme README.md --output-json dist/docs.json && vp fmt README.md",
     "build": "pnpm run clean && pnpm run docgen && tsc && rollup -c rollup.config.mjs",
     "clean": "rimraf ./dist",
     "watch": "tsc --watch",
-    "prepublishOnly": "pnpm run build"
+    "prepublishOnly": "pnpm run build",
+    "prepare": "vp config",
+    "check": "vp check"
   },
   "devDependencies": {
     "@capacitor/android": "^8.0.0",
     "@capacitor/core": "^8.0.0",
     "@capacitor/docgen": "^0.3.1",
     "@capacitor/ios": "^8.0.0",
-    "@ionic/eslint-config": "^0.4.0",
-    "@ionic/prettier-config": "^4.0.0",
-    "@ionic/swiftlint-config": "^2.0.0",
-    "eslint": "^8.57.1",
-    "prettier": "^3.6.2",
-    "prettier-plugin-java": "^2.7.7",
     "rimraf": "^6.1.0",
     "rollup": "^4.53.2",
-    "swiftlint": "^2.0.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vite-plus": "catalog:"
   },
   "peerDependencies": {
     "@capacitor/core": ">=8.0.0"
-  },
-  "prettier": "@ionic/prettier-config",
-  "swiftlint": "@ionic/swiftlint-config",
-  "eslintConfig": {
-    "extends": "@ionic/eslint-config/recommended"
   },
   "engines": {
     "node": ">=18.15.0"

@@ -17,6 +17,7 @@ declare global {
   interface Window {
     Intercom?: Intercom;
     intercomSettings?: IntercomSettings;
+    // oxlint-disable-next-line typescript/no-explicit-any -- part of the published Window augmentation
     attachEvent?: any;
   }
 }
@@ -26,6 +27,7 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
     const app_id = config?.app_id;
 
     if (!app_id) {
+      // oxlint-disable-next-line no-console -- tells the app developer why the widget does not load
       console.error('Intercom app_id is not defined');
       return;
     }
@@ -39,13 +41,13 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
           ic('update', w.intercomSettings);
         } else {
           const d = document;
-          // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+          // oxlint-disable-next-line typescript/no-explicit-any -- Intercom's loader snippet, a function carrying a queue
           const i = <any>function () {
             // eslint-disable-next-line prefer-rest-params
             i.c(arguments);
           };
           i.q = [];
-          i.c = function (args: any) {
+          i.c = function (args: unknown) {
             i.q.push(args);
           };
           w.Intercom = i;
@@ -68,7 +70,7 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
           }
         }
       })();
-    } catch (err) {
+    } catch {
       throw Error('Could not initialize the Intercom plugin.');
     }
   }
