@@ -63,7 +63,10 @@ public class IntercomPlugin: CAPPlugin {
     }
 
     @objc func setCustomAttributes(_ call: CAPPluginCall) {
-        let attributes = call.getObject("attributes")
+        guard let attributes = call.getObject("attributes") else {
+            call.reject("[Intercom SDK] You must supply the attributes to set")
+            return
+        }
 
         let userAttributes = ICMUserAttributes()
         userAttributes.customAttributes = attributes
@@ -80,17 +83,17 @@ public class IntercomPlugin: CAPPlugin {
     }
 
     @objc func loginIdentifiedUser(_ call: CAPPluginCall) {
-        let userId = call.getString("userId")
-        let email = call.getString("email")
-        let hmac = call.getString("userHash")
+        let userId = nonEmptyString(call, "userId")
+        let email = nonEmptyString(call, "email")
+        let hmac = nonEmptyString(call, "userHash")
 
         if userId == nil && email == nil {
             call.reject("[Intercom SDK] You must supply an email, userId or both")
             return
         }
 
-        if hmac != nil {
-            Intercom.setUserHash(hmac!)
+        if let hmac {
+            Intercom.setUserHash(hmac)
         }
 
         let attributes = ICMUserAttributes()
@@ -125,14 +128,15 @@ public class IntercomPlugin: CAPPlugin {
     }
 
     @objc func logEvent(_ call: CAPPluginCall) {
-        let eventName = call.getString("name")
-        let metaData = call.getObject("data")
+        guard let eventName = nonEmptyString(call, "name") else {
+            call.reject("[Intercom SDK] You must supply an event name")
+            return
+        }
 
-        if eventName != nil && metaData != nil {
-            Intercom.logEvent(withName: eventName!, metaData: metaData!)
-
-        } else if eventName != nil {
-            Intercom.logEvent(withName: eventName!)
+        if let metaData = call.getObject("data") {
+            Intercom.logEvent(withName: eventName, metaData: metaData)
+        } else {
+            Intercom.logEvent(withName: eventName)
         }
 
         call.resolve()
@@ -144,11 +148,7 @@ public class IntercomPlugin: CAPPlugin {
     }
 
     @objc func displayMessageComposer(_ call: CAPPluginCall) {
-        guard let initialMessage = call.getString("content") else {
-            call.reject("[Intercom SDK] You must provide an initial message")
-            return
-        }
-        Intercom.presentMessageComposer(initialMessage)
+        Intercom.presentMessageComposer(call.getString("content"))
         call.resolve()
     }
 
@@ -158,7 +158,7 @@ public class IntercomPlugin: CAPPlugin {
     }
 
     @objc func displayArticle(_ call: CAPPluginCall) {
-        guard let articleId = call.getString("id") else {
+        guard let articleId = id(call) else {
             call.reject("[Intercom SDK] You must supply an articleId to display it")
             return
         }
@@ -168,8 +168,8 @@ public class IntercomPlugin: CAPPlugin {
     }
 
     @objc func displaySurvey(_ call: CAPPluginCall) {
-        guard let surveyId = call.getString("id") else {
-            call.reject("[Intercom SDK] You must supply an surveyId to display it")
+        guard let surveyId = id(call) else {
+            call.reject("[Intercom SDK] You must supply a surveyId to display it")
             return
         }
 
@@ -185,6 +185,21 @@ public class IntercomPlugin: CAPPlugin {
     @objc func displayLauncher(_ call: CAPPluginCall) {
         Intercom.setLauncherVisible(true)
         call.resolve()
+    }
+
+    private func nonEmptyString(_ call: CAPPluginCall, _ key: String) -> String? {
+        guard let value = call.getString(key), !value.isEmpty else {
+            return nil
+        }
+        return value
+    }
+
+    // the TypeScript API types the id as a number, which call.getString() reads as nil
+    private func id(_ call: CAPPluginCall) -> String? {
+        if let id = call.getInt("id") {
+            return String(id)
+        }
+        return nonEmptyString(call, "id")
     }
 
     @objc func hideLauncher(_ call: CAPPluginCall) {

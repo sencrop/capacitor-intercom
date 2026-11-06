@@ -63,20 +63,31 @@ public class IntercomPlugin extends Plugin {
         return list;
     }
 
+    private static boolean isEmpty(String value) {
+        return value == null || value.isEmpty();
+    }
+
+    // the TypeScript API types the id as a number, which call.getString() reads as null
+    private static String getId(PluginCall call) {
+        Object id = call.getData().opt("id");
+        if (id == null || id == JSONObject.NULL) {
+            return null;
+        }
+        String value = String.valueOf(id);
+        return value.isEmpty() ? null : value;
+    }
+
     @PluginMethod
-    public void initialize(PluginCall call) throws Exception {
-        // get config
+    public void initialize(PluginCall call) {
         String apiKey = getConfig().getString("android_apiKey", "ADD_IN_CAPACITOR_CONFIG_JSON");
         String appId = getConfig().getString("appId", "ADD_IN_CAPACITOR_CONFIG_JSON");
 
-        // init intercom sdk
         try {
             Intercom.initialize(this.getActivity().getApplication(), apiKey, appId);
             Intercom.client().handlePushMessage();
             call.resolve();
         } catch (Exception e) {
-            call.reject("Could not initialize the Intercom plugin");
-            throw new Exception("Could not initialize the Intercom plugin");
+            call.reject("[Intercom SDK] Could not initialize the Intercom plugin", e);
         }
     }
 
@@ -86,16 +97,21 @@ public class IntercomPlugin extends Plugin {
         String userId = call.getString("userId");
         String userHash = call.getString("userHash");
 
-        if (userHash != null && userHash.length() > 0) {
+        if (isEmpty(email) && isEmpty(userId)) {
+            call.reject("[Intercom SDK] You must supply an email, userId or both");
+            return;
+        }
+
+        if (!isEmpty(userHash)) {
             Intercom.client().setUserHash(userHash);
         }
 
         Registration registration = Registration.create();
 
-        if (email != null && email.length() > 0) {
+        if (!isEmpty(email)) {
             registration = registration.withEmail(email);
         }
-        if (userId != null && userId.length() > 0) {
+        if (!isEmpty(userId)) {
             registration = registration.withUserId(userId);
         }
 
@@ -110,7 +126,9 @@ public class IntercomPlugin extends Plugin {
 
                             @Override
                             public void onFailure(@NonNull IntercomError intercomError) {
-                                call.reject("Intercom error : " + intercomError.getErrorMessage());
+                                call.reject(
+                                        "[Intercom SDK] Error while login user: "
+                                                + intercomError.getErrorMessage());
                             }
                         });
     }
@@ -127,7 +145,9 @@ public class IntercomPlugin extends Plugin {
 
                             @Override
                             public void onFailure(@NonNull IntercomError intercomError) {
-                                call.reject("Intercom error : " + intercomError.getErrorMessage());
+                                call.reject(
+                                        "[Intercom SDK] Error while login unidentified user: "
+                                                + intercomError.getErrorMessage());
                             }
                         });
     }
@@ -139,13 +159,20 @@ public class IntercomPlugin extends Plugin {
         String name = call.getString("name");
         String language = call.getString("language");
 
-        UserAttributes userAttributes =
-                new UserAttributes.Builder()
-                        .withName(name)
-                        .withEmail(email)
-                        .withPhone(phone)
-                        .withLanguageOverride(language)
-                        .build();
+        UserAttributes.Builder builder = new UserAttributes.Builder();
+        if (email != null) {
+            builder = builder.withEmail(email);
+        }
+        if (phone != null) {
+            builder = builder.withPhone(phone);
+        }
+        if (name != null) {
+            builder = builder.withName(name);
+        }
+        if (language != null) {
+            builder = builder.withLanguageOverride(language);
+        }
+        UserAttributes userAttributes = builder.build();
         Intercom.client()
                 .updateUser(
                         userAttributes,
@@ -157,7 +184,9 @@ public class IntercomPlugin extends Plugin {
 
                             @Override
                             public void onFailure(@NonNull IntercomError intercomError) {
-                                call.reject("Intercom error : " + intercomError.getErrorMessage());
+                                call.reject(
+                                        "[Intercom SDK] Error while updating user: "
+                                                + intercomError.getErrorMessage());
                             }
                         });
     }
@@ -165,6 +194,10 @@ public class IntercomPlugin extends Plugin {
     @PluginMethod
     public void setCustomAttributes(PluginCall call) {
         Map<String, Object> attributes = mapFromJSON(call.getObject("attributes"));
+        if (attributes == null) {
+            call.reject("[Intercom SDK] You must supply the attributes to set");
+            return;
+        }
 
         UserAttributes.Builder userAttributesBuilder = new UserAttributes.Builder();
 
@@ -186,7 +219,9 @@ public class IntercomPlugin extends Plugin {
 
                             @Override
                             public void onFailure(@NonNull IntercomError intercomError) {
-                                call.reject("Intercom error : " + intercomError.getErrorMessage());
+                                call.reject(
+                                        "[Intercom SDK] Error while setting custom attribute(s): "
+                                                + intercomError.getErrorMessage());
                             }
                         });
     }
@@ -200,6 +235,10 @@ public class IntercomPlugin extends Plugin {
     @PluginMethod
     public void logEvent(PluginCall call) {
         String eventName = call.getString("name");
+        if (isEmpty(eventName)) {
+            call.reject("[Intercom SDK] You must supply an event name");
+            return;
+        }
         Map<String, Object> metaData = mapFromJSON(call.getObject("data"));
 
         if (metaData == null) {
@@ -254,14 +293,22 @@ public class IntercomPlugin extends Plugin {
 
     @PluginMethod
     public void displayArticle(PluginCall call) {
-        String articleId = call.getString("id");
+        String articleId = getId(call);
+        if (articleId == null) {
+            call.reject("[Intercom SDK] You must supply an articleId to display it");
+            return;
+        }
         Intercom.client().presentContent(new IntercomContent.Article(articleId));
         call.resolve();
     }
 
     @PluginMethod
     public void displaySurvey(PluginCall call) {
-        String surveyId = call.getString("id");
+        String surveyId = getId(call);
+        if (surveyId == null) {
+            call.reject("[Intercom SDK] You must supply a surveyId to display it");
+            return;
+        }
         Intercom.client().presentContent(new IntercomContent.Survey(surveyId));
         call.resolve();
     }
