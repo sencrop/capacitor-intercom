@@ -9,5 +9,3 @@ android/.project
 # Devenv
 .devenv
 .devenv.flake.nix
-.direnv
-!.envrc
