@@ -13,23 +13,23 @@ npx cap sync
 
 <docgen-index>
 
-* [`initialize(...)`](#initialize)
-* [`loginIdentifiedUser(...)`](#loginidentifieduser)
-* [`loginUnidentifiedUser()`](#loginunidentifieduser)
-* [`updateUser(...)`](#updateuser)
-* [`logout()`](#logout)
-* [`logEvent(...)`](#logevent)
-* [`displayMessenger()`](#displaymessenger)
-* [`displayMessageComposer(...)`](#displaymessagecomposer)
-* [`displayHelpCenter()`](#displayhelpcenter)
-* [`displayArticle(...)`](#displayarticle)
-* [`hideMessenger()`](#hidemessenger)
-* [`displayLauncher()`](#displaylauncher)
-* [`hideLauncher()`](#hidelauncher)
-* [`setCustomAttributes(...)`](#setcustomattributes)
-* [`displaySurvey(...)`](#displaysurvey)
-* [Interfaces](#interfaces)
-* [Type Aliases](#type-aliases)
+- [`initialize(...)`](#initialize)
+- [`loginIdentifiedUser(...)`](#loginidentifieduser)
+- [`loginUnidentifiedUser()`](#loginunidentifieduser)
+- [`updateUser(...)`](#updateuser)
+- [`logout()`](#logout)
+- [`logEvent(...)`](#logevent)
+- [`displayMessenger()`](#displaymessenger)
+- [`displayMessageComposer(...)`](#displaymessagecomposer)
+- [`displayHelpCenter()`](#displayhelpcenter)
+- [`displayArticle(...)`](#displayarticle)
+- [`hideMessenger()`](#hidemessenger)
+- [`displayLauncher()`](#displaylauncher)
+- [`hideLauncher()`](#hidelauncher)
+- [`setCustomAttributes(...)`](#setcustomattributes)
+- [`displaySurvey(...)`](#displaysurvey)
+- [Interfaces](#interfaces)
+- [Type Aliases](#type-aliases)
 
 </docgen-index>
 
@@ -46,8 +46,7 @@ initialize(config: IntercomSettings) => void
 | ------------ | ------------------------------------------------------------- |
 | **`config`** | <code><a href="#intercomsettings">IntercomSettings</a></code> |
 
---------------------
-
+---
 
 ### loginIdentifiedUser(...)
 
@@ -59,8 +58,7 @@ loginIdentifiedUser(identity: IntercomIdentity) => Promise<void>
 | -------------- | ------------------------------------------------------------- |
 | **`identity`** | <code><a href="#intercomidentity">IntercomIdentity</a></code> |
 
---------------------
-
+---
 
 ### loginUnidentifiedUser()
 
@@ -68,8 +66,7 @@ loginIdentifiedUser(identity: IntercomIdentity) => Promise<void>
 loginUnidentifiedUser() => Promise<void>
 ```
 
---------------------
-
+---
 
 ### updateUser(...)
 
@@ -81,8 +78,7 @@ updateUser(user: IntercomUser) => Promise<void>
 | ---------- | ----------------------------------------------------- |
 | **`user`** | <code><a href="#intercomuser">IntercomUser</a></code> |
 
---------------------
-
+---
 
 ### logout()
 
@@ -90,8 +86,7 @@ updateUser(user: IntercomUser) => Promise<void>
 logout() => Promise<void>
 ```
 
---------------------
-
+---
 
 ### logEvent(...)
 
@@ -103,8 +98,7 @@ logEvent(event: IntercomEvent) => Promise<void>
 | ----------- | ------------------------------------------------------- |
 | **`event`** | <code><a href="#intercomevent">IntercomEvent</a></code> |
 
---------------------
-
+---
 
 ### displayMessenger()
 
@@ -112,8 +106,7 @@ logEvent(event: IntercomEvent) => Promise<void>
 displayMessenger() => Promise<void>
 ```
 
---------------------
-
+---
 
 ### displayMessageComposer(...)
 
@@ -125,8 +118,7 @@ displayMessageComposer(message: IntercomMessage) => Promise<void>
 | ------------- | ----------------------------------------------------------- |
 | **`message`** | <code><a href="#intercommessage">IntercomMessage</a></code> |
 
---------------------
-
+---
 
 ### displayHelpCenter()
 
@@ -134,8 +126,7 @@ displayMessageComposer(message: IntercomMessage) => Promise<void>
 displayHelpCenter() => Promise<void>
 ```
 
---------------------
-
+---
 
 ### displayArticle(...)
 
@@ -147,8 +138,7 @@ displayArticle(article: IntercomArticle) => Promise<void>
 | ------------- | ----------------------------------------------------------- |
 | **`article`** | <code><a href="#intercomarticle">IntercomArticle</a></code> |
 
---------------------
-
+---
 
 ### hideMessenger()
 
@@ -156,8 +146,7 @@ displayArticle(article: IntercomArticle) => Promise<void>
 hideMessenger() => Promise<void>
 ```
 
---------------------
-
+---
 
 ### displayLauncher()
 
@@ -165,8 +154,7 @@ hideMessenger() => Promise<void>
 displayLauncher() => Promise<void>
 ```
 
---------------------
-
+---
 
 ### hideLauncher()
 
@@ -174,8 +162,7 @@ displayLauncher() => Promise<void>
 hideLauncher() => Promise<void>
 ```
 
---------------------
-
+---
 
 ### setCustomAttributes(...)
 
@@ -187,8 +174,7 @@ setCustomAttributes(payload: IntercomCustomAttributes) => Promise<void>
 | ------------- | ----------------------------------------------------------------------------- |
 | **`payload`** | <code><a href="#intercomcustomattributes">IntercomCustomAttributes</a></code> |
 
---------------------
-
+---
 
 ### displaySurvey(...)
 
@@ -200,11 +186,9 @@ displaySurvey(survey: IntercomSurvey) => Promise<void>
 | ------------ | --------------------------------------------------------- |
 | **`survey`** | <code><a href="#intercomsurvey">IntercomSurvey</a></code> |
 
---------------------
-
+---
 
 ### Interfaces
-
 
 #### IntercomSettings
 
@@ -237,7 +221,6 @@ displaySurvey(survey: IntercomSurvey) => Promise<void>
 | **`companies`**                | <code>IntercomCompany[]</code>                              |
 | **`avatar`**                   | <code><a href="#intercomavatar">IntercomAvatar</a></code>   |
 
-
 #### IntercomCompany
 
 | Prop                    | Type                          |
@@ -254,14 +237,12 @@ displaySurvey(survey: IntercomSurvey) => Promise<void>
 | **`website`**           | <code>string</code>           |
 | **`industry`**          | <code>string</code>           |
 
-
 #### IntercomAvatar
 
 | Prop            | Type                  |
 | --------------- | --------------------- |
 | **`type`**      | <code>'avatar'</code> |
 | **`image_url`** | <code>string</code>   |
-
 
 #### IntercomIdentity
 
@@ -270,7 +251,6 @@ displaySurvey(survey: IntercomSurvey) => Promise<void>
 | **`userId`**   | <code>string</code> |
 | **`email`**    | <code>string</code> |
 | **`userHash`** | <code>string</code> |
-
 
 #### IntercomUser
 
@@ -281,7 +261,6 @@ displaySurvey(survey: IntercomSurvey) => Promise<void>
 | **`name`**     | <code>string</code> |
 | **`language`** | <code>string</code> |
 
-
 #### IntercomEvent
 
 | Prop       | Type                |
@@ -289,13 +268,11 @@ displaySurvey(survey: IntercomSurvey) => Promise<void>
 | **`name`** | <code>string</code> |
 | **`data`** | <code>any</code>    |
 
-
 #### IntercomMessage
 
 | Prop          | Type                |
 | ------------- | ------------------- |
 | **`content`** | <code>string</code> |
-
 
 #### IntercomArticle
 
@@ -303,13 +280,11 @@ displaySurvey(survey: IntercomSurvey) => Promise<void>
 | -------- | ------------------- |
 | **`id`** | <code>number</code> |
 
-
 #### IntercomCustomAttributes
 
 | Prop             | Type                                                                                 |
 | ---------------- | ------------------------------------------------------------------------------------ |
 | **`attributes`** | <code><a href="#record">Record</a>&lt;string, number \| string \| boolean&gt;</code> |
-
 
 #### IntercomSurvey
 
@@ -317,14 +292,14 @@ displaySurvey(survey: IntercomSurvey) => Promise<void>
 | -------- | ------------------- |
 | **`id`** | <code>number</code> |
 
-
 ### Type Aliases
-
 
 #### Record
 
 Construct a type with a set of properties K of type T
 
-<code>{ [P in K]: T; }</code>
+<code>{
+[P in K]: T;
+}</code>
 
 </docgen-api>

@@ -1,10 +1,10 @@
 engineStrict: true
 strictPeerDependencies: true
-savePrefix: ''
+savePrefix: ""
 
 minimumReleaseAge: 1440
 minimumReleaseAgeExclude:
-  - '@sencrop/*'
+  - "@sencrop/*"
 trustPolicy: no-downgrade
 trustPolicyExcludePrune: true
 # exact versions audited as false positives of no-downgrade
@@ -15,9 +15,9 @@ catalog:
   vite: npm:@voidzero-dev/vite-plus-core@1.5.0
   vite-plus: 1.5.0
 overrides:
-  vite@*: 'catalog:'
+  vite@*: "catalog:"
 peerDependencyRules:
   allowAny:
     - vite
   allowedVersions:
-    vite: '*'
+    vite: "*"

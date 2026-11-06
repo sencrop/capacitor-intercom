@@ -9,9 +9,9 @@ This guide provides instructions for contributing to this Capacitor plugin.
 1. Clone the repo.
 1. Install the dependencies from a devenv shell.
 
-    ```shell
-    devenv shell -- pnpm install
-    ```
+   ```shell
+   devenv shell -- pnpm install
+   ```
 
 ### Scripts
 

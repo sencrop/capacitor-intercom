@@ -1,4 +1,4 @@
-import { WebPlugin } from '@capacitor/core';
+import { WebPlugin } from "@capacitor/core";
 
 import type {
   Intercom,
@@ -11,7 +11,7 @@ import type {
   IntercomSettings,
   IntercomSurvey,
   IntercomUser,
-} from './definitions';
+} from "./definitions";
 
 declare global {
   interface Window {
@@ -28,7 +28,7 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
 
     if (!app_id) {
       // oxlint-disable-next-line no-console -- tells the app developer why the widget does not load
-      console.error('Intercom app_id is not defined');
+      console.error("Intercom app_id is not defined");
       return;
     }
     window.intercomSettings = config;
@@ -36,9 +36,9 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
       (function () {
         const w = window;
         const ic = w.Intercom;
-        if (typeof ic === 'function') {
-          ic('reattach_activator');
-          ic('update', w.intercomSettings);
+        if (typeof ic === "function") {
+          ic("reattach_activator");
+          ic("update", w.intercomSettings);
         } else {
           const d = document;
           // oxlint-disable-next-line typescript/no-explicit-any -- Intercom's loader snippet, a function carrying a queue
@@ -52,33 +52,33 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
           };
           w.Intercom = i;
           const l = function () {
-            const s = d.createElement('script');
-            s.type = 'text/javascript';
+            const s = d.createElement("script");
+            s.type = "text/javascript";
             s.async = true;
             s.src = `https://widget.intercom.io/widget/${app_id}`;
-            const x = d.getElementsByTagName('script')[0];
+            const x = d.getElementsByTagName("script")[0];
             if (x?.parentNode) {
               x.parentNode.insertBefore(s, x);
             }
           };
-          if (document.readyState === 'complete') {
+          if (document.readyState === "complete") {
             l();
           } else if (w.attachEvent) {
-            w.attachEvent('onload', l);
+            w.attachEvent("onload", l);
           } else {
-            w.addEventListener('load', l, false);
+            w.addEventListener("load", l, false);
           }
         }
       })();
     } catch {
-      throw Error('Could not initialize the Intercom plugin.');
+      throw Error("Could not initialize the Intercom plugin.");
     }
   }
 
   async loginIdentifiedUser(identity: IntercomIdentity): Promise<void> {
     const { userId, email, userHash } = identity;
     if (window.Intercom) {
-      window.Intercom('boot', {
+      window.Intercom("boot", {
         user_id: userId,
         email,
         user_hash: userHash,
@@ -88,14 +88,14 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
 
   async loginUnidentifiedUser(): Promise<void> {
     if (window.Intercom) {
-      await window.Intercom('boot', {});
+      await window.Intercom("boot", {});
     }
   }
 
   async updateUser(user: IntercomUser): Promise<void> {
     const { email, phone, name, language } = user;
     if (window.Intercom) {
-      await window.Intercom('update', {
+      await window.Intercom("update", {
         email,
         phone,
         name,
@@ -106,32 +106,32 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
 
   async setCustomAttributes(payload: IntercomCustomAttributes): Promise<void> {
     if (window.Intercom) {
-      await window.Intercom('update', payload.attributes);
+      await window.Intercom("update", payload.attributes);
     }
   }
 
   async logout(): Promise<void> {
     if (window.Intercom) {
-      await window.Intercom('shutdown');
+      await window.Intercom("shutdown");
     }
   }
 
   async logEvent(event: IntercomEvent): Promise<void> {
     const { name, data } = event;
     if (window.Intercom) {
-      await window.Intercom('trackEvent', name, data);
+      await window.Intercom("trackEvent", name, data);
     }
   }
 
   async displayMessenger(): Promise<void> {
     if (window.Intercom) {
-      await window.Intercom('show');
+      await window.Intercom("show");
     }
   }
 
   async displayArticle(article: IntercomArticle): Promise<void> {
     if (window.Intercom) {
-      await window.Intercom('showArticle', article.id);
+      await window.Intercom("showArticle", article.id);
     }
   }
 
@@ -139,28 +139,28 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
     const { content } = message || {};
     if (window.Intercom) {
       if (content) {
-        await window.Intercom('showNewMessage', content);
+        await window.Intercom("showNewMessage", content);
       } else {
-        await window.Intercom('showNewMessage');
+        await window.Intercom("showNewMessage");
       }
     }
   }
 
   async displayHelpCenter(): Promise<void> {
     if (window.Intercom) {
-      window.Intercom('show');
+      window.Intercom("show");
     }
   }
 
   async hideMessenger(): Promise<void> {
     if (window.Intercom) {
-      await window.Intercom('hide');
+      await window.Intercom("hide");
     }
   }
 
   async displayLauncher(): Promise<void> {
     if (window.Intercom) {
-      await window.Intercom('update', {
+      await window.Intercom("update", {
         hide_default_launcher: false,
       });
     }
@@ -168,7 +168,7 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
 
   async hideLauncher(): Promise<void> {
     if (window.Intercom) {
-      await window.Intercom('update', {
+      await window.Intercom("update", {
         hide_default_launcher: true,
       });
     }
@@ -176,7 +176,7 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
 
   async displaySurvey(survey: IntercomSurvey): Promise<void> {
     if (window.Intercom) {
-      await window.Intercom('startSurvey', survey.id);
+      await window.Intercom("startSurvey", survey.id);
     }
   }
 }

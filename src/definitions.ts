@@ -39,7 +39,11 @@ export interface IntercomSettings {
   avatar?: IntercomAvatar | undefined;
 
   // Custom attributes
-  [custom_attribute: string]: IntercomCompany | IntercomCompany[] | IntercomAvatar | IntercomCustomAttribute;
+  [custom_attribute: string]:
+    | IntercomCompany
+    | IntercomCompany[]
+    | IntercomAvatar
+    | IntercomCustomAttribute;
 }
 
 interface IntercomCompany {
@@ -58,7 +62,7 @@ interface IntercomCompany {
 }
 
 interface IntercomAvatar {
-  type: 'avatar';
+  type: "avatar";
   image_url: string;
 }
 
