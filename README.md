@@ -31,7 +31,11 @@ On the web, `initialize({ app_id })` loads the Intercom Messenger widget with th
 The plugin does not handle push notifications: the app wires them, on both platforms.
 
 - **iOS**: Intercom needs the APNs device token. The plugin forwards it when the app posts it, as `Data`, with Capacitor's `capacitorDidRegisterForRemoteNotifications` notification, as the setup of `@capacitor/push-notifications` does. An app that posts another token there (an FCM token, for example) calls `Intercom.setDeviceToken(deviceToken)` itself in `application(_:didRegisterForRemoteNotificationsWithDeviceToken:)`.
-- **Android**: the app's `FirebaseMessagingService` sends the token to Intercom in `onNewToken` (`IntercomPushClient.sendTokenToIntercom`) and hands the Intercom messages over to it in `onMessageReceived` (`isIntercomPush`, then `handlePush`). These classes come from `io.intercom.android:intercom-sdk`, which the app declares at the same version as the plugin's `intercom-sdk-base` (`intercomSdkVersion`); Gradle would otherwise mix two Intercom versions.
+- **Android**: the app's own `FirebaseMessagingService` sends the token to Intercom in `onNewToken` (`IntercomPushClient.sendTokenToIntercom`) and hands the Intercom messages over to it in `onMessageReceived` (`isIntercomPush`, then `handlePush`). `IntercomPushClient` comes from the SDK the plugin exposes (see [Android](#android)).
+
+## Android
+
+The plugin brings the Intercom Android SDK (`io.intercom.android:intercom-sdk-base`) and exposes it to the app (`api` dependency), so the app compiles against its classes, `IntercomPushClient` included. The app does not declare Intercom itself: a second Intercom artifact, such as `io.intercom.android:intercom-sdk`, would make Gradle mix two Intercom versions. The version is the plugin's default unless the app sets `intercomSdkVersion` in its `variables.gradle`, as with the other Capacitor plugins.
 
 ## API
 
