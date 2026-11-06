@@ -1,0 +1,32 @@
+---
+name: Release - prepare
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  release-please:
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      actions: write
+      contents: write
+      issues: write
+      pull-requests: write
+    steps:
+      # GITHUB_TOKEN: the org bot credentials are not shared with public repos.
+      # A release created with it triggers no `release` workflow, but a
+      # workflow_dispatch does.
+      - name: Run release-please
+        id: release_please
+        uses: googleapis/release-please-action@v4
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+      - name: Publish the release
+        if: steps.release_please.outputs.release_created == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.release_please.outputs.tag_name }}
+        run: gh workflow run release.yml --repo "$GITHUB_REPOSITORY" --ref "$GITHUB_REF_NAME" -f tag="$TAG"

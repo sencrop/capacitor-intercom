@@ -1,10 +1,11 @@
 ---
-name: Release
+# "Release - publish" is one of the workflow names the GitHub Slack app posts to
+# #deployment-updates-prod (org-wide subscription)
+name: Release - publish
 
 on:
-  push:
-    branches: [master]
-  # publishes an existing release tag, e.g. after a publish failure
+  # dispatched by "Release - prepare" when release-please creates a release, or
+  # run manually to publish an existing release tag again
   workflow_dispatch:
     inputs:
       tag:
@@ -12,30 +13,7 @@ on:
         required: true
 
 jobs:
-  release-please:
-    if: github.event_name == 'push'
-    runs-on: ubuntu-24.04-arm
-    permissions:
-      contents: write
-      issues: write
-      pull-requests: write
-    outputs:
-      release_created: ${{ steps.release_please.outputs.release_created }}
-      tag_name: ${{ steps.release_please.outputs.tag_name }}
-    steps:
-      # GITHUB_TOKEN: the org bot credentials are not shared with public repos.
-      # A release created with it triggers no workflow, hence the publish job below
-      # instead of a workflow on `release: published`.
-      - name: Run release-please
-        id: release_please
-        uses: googleapis/release-please-action@v4
-        with:
-          config-file: release-please-config.json
-          manifest-file: .release-please-manifest.json
-
   publish:
-    needs: [release-please]
-    if: always() && (needs.release-please.outputs.release_created == 'true' || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-24.04-arm
     permissions:
       contents: read
@@ -43,8 +21,8 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          # a manual run publishes a tag, never a branch or a commit
-          ref: refs/tags/${{ inputs.tag || needs.release-please.outputs.tag_name }}
+          # publishes a tag, never a branch or a commit
+          ref: refs/tags/${{ inputs.tag }}
 
       - name: Install dependencies
         uses: sencrop/github-workflows/actions/pnpm-install@master
@@ -67,4 +45,4 @@ jobs:
         working-directory: ${{ runner.temp }}/package
         run: |
           npm stage publish ./*.tgz
-          echo "Staged: approve it with 2FA on https://www.npmjs.com/settings/<npm-username>/staged-packages, or with \`npm stage approve <stage-id>\` (\`npm stage list @sencrop/capacitor-intercom\`)." >> "$GITHUB_STEP_SUMMARY"
+          echo "Staged: approve it with 2FA in the Staged Packages tab of your npm account settings, https://www.npmjs.com/settings/<your-npm-username>/staged-packages, or with \`npm stage approve <stage-id>\` (\`npm stage list @sencrop/capacitor-intercom\`)." >> "$GITHUB_STEP_SUMMARY"
