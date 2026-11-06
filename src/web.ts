@@ -141,7 +141,7 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
   }
 
   async displayArticle(article: IntercomArticle): Promise<void> {
-    if (article?.id == null) {
+    if (article?.id == null || String(article.id) === "") {
       throw new Error(
         "[Intercom SDK] You must supply an articleId to display it"
       );
@@ -191,7 +191,7 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
   }
 
   async displaySurvey(survey: IntercomSurvey): Promise<void> {
-    if (survey?.id == null) {
+    if (survey?.id == null || String(survey.id) === "") {
       throw new Error(
         "[Intercom SDK] You must supply a surveyId to display it"
       );
