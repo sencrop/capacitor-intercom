@@ -86,6 +86,9 @@ interface IntercomCommandSignature {
   startTour: (tourId: number) => void;
   showArticle: (articleId: number) => void;
   startSurvey: (surveyId: number) => void;
+  showSpace: (
+    spaceName: "home" | "messages" | "help" | "news" | "tasks" | "tickets"
+  ) => void;
   reattach_activator: () => void;
 }
 
@@ -102,7 +105,7 @@ export interface Intercom {
 ///// ENDOF: Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
 export interface IntercomIdentity {
-  userId: string;
+  userId?: string;
   email?: string;
   userHash?: string;
 }

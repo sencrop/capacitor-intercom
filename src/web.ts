@@ -22,6 +22,9 @@ declare global {
   }
 }
 
+const isValidId = (id: unknown): boolean =>
+  Number.isInteger(id) || (typeof id === "string" && id !== "");
+
 export class IntercomWeb extends WebPlugin implements IntercomPlugin {
   initialize(config?: IntercomSettings): void {
     const app_id = config?.app_id;
@@ -77,6 +80,11 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
 
   async loginIdentifiedUser(identity: IntercomIdentity): Promise<void> {
     const { userId, email, userHash } = identity;
+    if (!userId && !email) {
+      throw new Error(
+        "[Intercom SDK] You must supply an email, userId or both"
+      );
+    }
     if (window.Intercom) {
       window.Intercom("boot", {
         user_id: userId,
@@ -105,6 +113,9 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
   }
 
   async setCustomAttributes(payload: IntercomCustomAttributes): Promise<void> {
+    if (!payload?.attributes) {
+      throw new Error("[Intercom SDK] You must supply the attributes to set");
+    }
     if (window.Intercom) {
       await window.Intercom("update", payload.attributes);
     }
@@ -118,6 +129,9 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
 
   async logEvent(event: IntercomEvent): Promise<void> {
     const { name, data } = event;
+    if (!name) {
+      throw new Error("[Intercom SDK] You must supply an event name");
+    }
     if (window.Intercom) {
       await window.Intercom("trackEvent", name, data);
     }
@@ -130,6 +144,11 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
   }
 
   async displayArticle(article: IntercomArticle): Promise<void> {
+    if (!isValidId(article?.id)) {
+      throw new Error(
+        "[Intercom SDK] You must supply an articleId to display it"
+      );
+    }
     if (window.Intercom) {
       await window.Intercom("showArticle", article.id);
     }
@@ -148,7 +167,7 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
 
   async displayHelpCenter(): Promise<void> {
     if (window.Intercom) {
-      window.Intercom("show");
+      window.Intercom("showSpace", "help");
     }
   }
 
@@ -175,6 +194,11 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
   }
 
   async displaySurvey(survey: IntercomSurvey): Promise<void> {
+    if (!isValidId(survey?.id)) {
+      throw new Error(
+        "[Intercom SDK] You must supply a surveyId to display it"
+      );
+    }
     if (window.Intercom) {
       await window.Intercom("startSurvey", survey.id);
     }
