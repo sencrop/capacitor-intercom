@@ -167,7 +167,7 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
 
   async displayHelpCenter(): Promise<void> {
     if (window.Intercom) {
-      window.Intercom("show");
+      window.Intercom("showSpace", "help");
     }
   }
 

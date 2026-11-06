@@ -86,6 +86,9 @@ interface IntercomCommandSignature {
   startTour: (tourId: number) => void;
   showArticle: (articleId: number) => void;
   startSurvey: (surveyId: number) => void;
+  showSpace: (
+    spaceName: "home" | "messages" | "help" | "news" | "tasks" | "tickets"
+  ) => void;
   reattach_activator: () => void;
 }
 
