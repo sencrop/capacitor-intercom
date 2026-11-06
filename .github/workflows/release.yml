@@ -43,7 +43,8 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: ${{ inputs.tag || needs.release-please.outputs.tag_name }}
+          # a manual run publishes a tag, never a branch or a commit
+          ref: refs/tags/${{ inputs.tag || needs.release-please.outputs.tag_name }}
 
       - name: Install dependencies
         uses: sencrop/github-workflows/actions/pnpm-install@master
