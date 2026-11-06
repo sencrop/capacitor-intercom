@@ -3,6 +3,49 @@ import { defineConfig } from "vite-plus";
 const LINTABLE_FILE = /\.[cm]?[jt]s$/;
 
 export default defineConfig({
+  pack: [
+    {
+      // definitions.ts only holds types: as an entry it still gets a module,
+      // which apps import by path (sencrop-app imports dist/esm/definitions)
+      entry: ["src/index.ts", "src/definitions.ts"],
+      format: "esm",
+      platform: "neutral",
+      target: "es2017",
+      sourcemap: true,
+      deps: { neverBundle: ["@capacitor/core"] },
+      outDir: "dist/esm",
+      unbundle: true,
+      outExtensions: () => ({ js: ".js", dts: ".d.ts" }),
+      dts: { entry: ["src/**/*.ts"], sourcemap: false },
+    },
+    {
+      entry: ["src/index.ts"],
+      platform: "neutral",
+      target: "es2017",
+      sourcemap: true,
+      deps: { neverBundle: ["@capacitor/core"] },
+      outDir: "dist",
+      // the ESM build writes into dist/esm
+      clean: false,
+      dts: false,
+      format: {
+        cjs: {
+          outputOptions: {
+            entryFileNames: "plugin.cjs.js",
+            codeSplitting: false,
+          },
+        },
+        iife: {
+          globalName: "capacitorIntercom",
+          outputOptions: {
+            entryFileNames: "plugin.js",
+            codeSplitting: false,
+            globals: { "@capacitor/core": "capacitorExports" },
+          },
+        },
+      },
+    },
+  ],
   staged: {
     // One glob per file: lint-staged runs globs concurrently, so a file matched
     // by two of them would be fixed by the linter and the formatter at once.
