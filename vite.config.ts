@@ -10,7 +10,7 @@ export default defineConfig({
       entry: ["src/index.ts", "src/definitions.ts"],
       format: "esm",
       platform: "neutral",
-      target: "es2017",
+      target: "es2021",
       sourcemap: true,
       deps: { neverBundle: ["@capacitor/core"] },
       outDir: "dist/esm",
@@ -21,7 +21,7 @@ export default defineConfig({
     {
       entry: ["src/index.ts"],
       platform: "neutral",
-      target: "es2017",
+      target: "es2021",
       sourcemap: true,
       deps: { neverBundle: ["@capacitor/core"] },
       outDir: "dist",
