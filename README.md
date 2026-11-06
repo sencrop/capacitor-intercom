@@ -5,9 +5,26 @@ Intercom Plugin for Capacitor
 ## Install
 
 ```bash
-npm install @sencrop/capacitor-intercom
-npx cap sync
+pnpm add @sencrop/capacitor-intercom
+pnpm exec cap sync
 ```
+
+## Configuration
+
+On iOS and Android, the plugin reads its keys from the Capacitor config, under `plugins.Intercom`:
+
+```ts
+// capacitor.config.ts
+plugins: {
+  Intercom: {
+    appId: "<Intercom app ID>",
+    ios_apiKey: "<Intercom iOS API key>",
+    android_apiKey: "<Intercom Android API key>",
+  },
+},
+```
+
+On the web, `initialize({ app_id })` loads the Intercom Messenger widget with the given app ID; the native platforms ignore the settings passed to `initialize`.
 
 ## API
 
