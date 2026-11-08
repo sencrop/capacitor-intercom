@@ -20,7 +20,9 @@
     "android/src/main/",
     "android/build.gradle",
     "dist/",
-    "ios/Plugin/",
+    "ios/Sources",
+    "ios/Tests",
+    "Package.swift",
     "SencropCapacitorIntercom.podspec"
   ],
   "main": "dist/plugin.cjs.js",
@@ -29,7 +31,7 @@
   "unpkg": "dist/plugin.js",
   "scripts": {
     "verify": "pnpm run verify:ios && pnpm run verify:android && pnpm run verify:web",
-    "verify:ios": "cd ios && pod install && xcodebuild clean build test -workspace Plugin.xcworkspace -scheme Plugin -destination \"platform=iOS Simulator,name=iPhone 14\" && cd ..",
+    "verify:ios": "xcodebuild -scheme SencropCapacitorIntercom -destination generic/platform=iOS",
     "verify:android": "cd android && ./gradlew clean build test && cd ..",
     "verify:web": "pnpm run build",
     "docgen": "docgen --project tsconfig.docgen.json --api IntercomPlugin --output-readme README.md --output-json dist/docs.json && vp fmt README.md",
@@ -39,7 +41,7 @@
     "prepare": "vp config",
     "check": "vp check",
     "check:android": "google-java-format --aosp --dry-run --set-exit-if-changed $(find android/src -name '*.java') && cd android && ./gradlew lint",
-    "check:ios": "xcrun swift-format lint --strict --recursive ios/Plugin ios/PluginTests"
+    "check:ios": "xcrun swift-format lint --strict --recursive ios/Sources ios/Tests"
   },
   "devDependencies": {
     "@capacitor/android": "^8.0.0",

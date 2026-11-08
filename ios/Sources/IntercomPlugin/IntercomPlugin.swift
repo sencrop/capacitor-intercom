@@ -9,7 +9,26 @@ enum PluginError: Error {
 /// Please read the Capacitor iOS Plugin Development Guide
 /// here: https://capacitorjs.com/docs/plugins/ios
 @objc(IntercomPlugin)
-public class IntercomPlugin: CAPPlugin {
+public class IntercomPlugin: CAPPlugin, CAPBridgedPlugin {
+    public let identifier = "IntercomPlugin"
+    public let jsName = "Intercom"
+    public let pluginMethods: [CAPPluginMethod] = [
+        CAPPluginMethod(name: "loginIdentifiedUser", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "loginUnidentifiedUser", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "updateUser", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "initialize", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "setCustomAttributes", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "logout", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "logEvent", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "displayMessenger", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "displayMessageComposer", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "displayHelpCenter", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "displayArticle", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "hideMessenger", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "displayLauncher", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "hideLauncher", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "displaySurvey", returnType: CAPPluginReturnPromise),
+    ]
 
     @objc func initialize(_ call: CAPPluginCall) {
         let config = getConfig()

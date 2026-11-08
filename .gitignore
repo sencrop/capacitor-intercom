@@ -9,3 +9,8 @@ android/.project
 # Devenv
 .devenv
 .devenv.flake.nix
+
+# Swift Package Manager
+.build
+.swiftpm
+Package.resolved

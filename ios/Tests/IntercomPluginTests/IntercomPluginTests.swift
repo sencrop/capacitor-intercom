@@ -2,7 +2,7 @@ import Capacitor
 import Intercom
 import XCTest
 
-@testable import Plugin
+@testable import IntercomPlugin
 
 // the SDK logs an error from the setter itself, and attributes() drops nil values
 private class AssignmentRecorder: ICMUserAttributes {
