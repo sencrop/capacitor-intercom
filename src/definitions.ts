@@ -139,6 +139,13 @@ export interface IntercomCustomAttributes {
   attributes: Record<string, number | string | boolean>;
 }
 
+export interface IntercomLoggedInUser {
+  /** Whether a user is logged in. An unidentified user is logged in without `userId` nor `email`. */
+  loggedIn: boolean;
+  userId?: string;
+  email?: string;
+}
+
 export interface IntercomPlugin {
   initialize(config: IntercomSettings): void;
   loginIdentifiedUser(identity: IntercomIdentity): Promise<void>;
@@ -155,4 +162,9 @@ export interface IntercomPlugin {
   hideLauncher(): Promise<void>;
   setCustomAttributes(payload: IntercomCustomAttributes): Promise<void>;
   displaySurvey(survey: IntercomSurvey): Promise<void>;
+  /**
+   * The user Intercom has logged in, kept from an earlier launch. Always `{ loggedIn: false }` on
+   * the web, whose Messenger does not expose it.
+   */
+  getLoggedInUser(): Promise<IntercomLoggedInUser>;
 }

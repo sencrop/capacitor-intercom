@@ -37,15 +37,29 @@ The plugin does not handle push notifications: the app wires them, on both platf
 
 The plugin brings the Intercom Android SDK (`io.intercom.android:intercom-sdk-base`) and exposes it to the app (`api` dependency), so the app compiles against its classes, `IntercomPushClient` included. The app does not declare Intercom itself: a second Intercom artifact, such as `io.intercom.android:intercom-sdk`, would make Gradle mix two Intercom versions. The version is the plugin's default unless the app sets `intercomSdkVersion` in its `variables.gradle`, as with the other Capacitor plugins.
 
-Call `IntercomPlugin.initialize(this)` from the `onCreate()` of the app's `Application` class. Android can open an Intercom activity before the WebView calls `initialize()`, from a tapped Intercom notification or when it restores the app after killing it, and Intercom crashes when it is not initialized by then. The `initialize()` of the JavaScript API then reuses that initialization.
+## Initialize at launch (optional)
+
+Intercom initializes when the JavaScript calls `initialize()`, so the app chooses when, after a consent for instance. A tapped Intercom notification can launch the app before that:
+
+- on Android, it opens an Intercom activity, and Intercom crashes when it is not initialized; Android also restores an Intercom activity when it reopens an app it killed;
+- on iOS, Intercom ignores the tap, and the app opens without the conversation.
+
+An app that wants these taps handled initializes Intercom when it launches, with the keys of the Capacitor config; the `initialize()` of the JavaScript API then reuses that initialization. Intercom then starts before any consent the app collects.
 
 ```java
-public class MyApplication extends Application {
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        IntercomPlugin.initialize(this);
-    }
+// Android: the app's Application class
+@Override
+public void onCreate() {
+    super.onCreate();
+    IntercomPlugin.initialize(this);
+}
+```
+
+```swift
+// iOS: AppDelegate (Objective-C reserves the name initialize)
+func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    IntercomPlugin.initializeIntercom()
+    return true
 }
 ```
 
@@ -68,6 +82,7 @@ public class MyApplication extends Application {
 - [`hideLauncher()`](#hidelauncher)
 - [`setCustomAttributes(...)`](#setcustomattributes)
 - [`displaySurvey(...)`](#displaysurvey)
+- [`getLoggedInUser()`](#getloggedinuser)
 - [Interfaces](#interfaces)
 - [Type Aliases](#type-aliases)
 
@@ -228,6 +243,19 @@ displaySurvey(survey: IntercomSurvey) => Promise<void>
 
 ---
 
+### getLoggedInUser()
+
+```typescript
+getLoggedInUser() => Promise<IntercomLoggedInUser>
+```
+
+The user Intercom has logged in, kept from an earlier launch. Always `{ loggedIn: false }` on
+the web, whose Messenger does not expose it.
+
+**Returns:** <code>Promise&lt;<a href="#intercomloggedinuser">IntercomLoggedInUser</a>&gt;</code>
+
+---
+
 ### Interfaces
 
 #### IntercomSettings
@@ -331,6 +359,14 @@ displaySurvey(survey: IntercomSurvey) => Promise<void>
 | Prop     | Type                |
 | -------- | ------------------- |
 | **`id`** | <code>number</code> |
+
+#### IntercomLoggedInUser
+
+| Prop           | Type                 | Description                                                                                  |
+| -------------- | -------------------- | -------------------------------------------------------------------------------------------- |
+| **`loggedIn`** | <code>boolean</code> | Whether a user is logged in. An unidentified user is logged in without `userId` nor `email`. |
+| **`userId`**   | <code>string</code>  |                                                                                              |
+| **`email`**    | <code>string</code>  |                                                                                              |
 
 ### Type Aliases
 
