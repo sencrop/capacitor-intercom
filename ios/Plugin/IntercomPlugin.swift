@@ -69,9 +69,9 @@ public class IntercomPlugin: CAPPlugin {
     }
 
     @objc func loginIdentifiedUser(_ call: CAPPluginCall) {
-        let userId = nonEmptyString(call, "userId")
-        let email = nonEmptyString(call, "email")
-        let hmac = nonEmptyString(call, "userHash")
+        let userId = Self.nonEmptyString(call, "userId")
+        let email = Self.nonEmptyString(call, "email")
+        let hmac = Self.nonEmptyString(call, "userHash")
 
         if userId == nil && email == nil {
             call.reject("[Intercom SDK] You must supply an email, userId or both")
@@ -110,7 +110,7 @@ public class IntercomPlugin: CAPPlugin {
     }
 
     @objc func logEvent(_ call: CAPPluginCall) {
-        guard let eventName = nonEmptyString(call, "name") else {
+        guard let eventName = Self.nonEmptyString(call, "name") else {
             call.reject("[Intercom SDK] You must supply an event name")
             return
         }
@@ -169,20 +169,20 @@ public class IntercomPlugin: CAPPlugin {
         call.resolve()
     }
 
-    // the SDK logs "'<attribute>' must be an NSString and can't be nil or empty" for each attribute set to nil
+    // the SDK logs "'<attribute>' must be an NSString and can't be nil or empty" for each attribute set to nil or ""
     static func userAttributes(
         _ call: CAPPluginCall, into attributes: ICMUserAttributes = ICMUserAttributes()
     ) -> ICMUserAttributes {
-        if let email = call.getString("email") {
+        if let email = nonEmptyString(call, "email") {
             attributes.email = email
         }
-        if let phone = call.getString("phone") {
+        if let phone = nonEmptyString(call, "phone") {
             attributes.phone = phone
         }
-        if let name = call.getString("name") {
+        if let name = nonEmptyString(call, "name") {
             attributes.name = name
         }
-        if let language = call.getString("language") {
+        if let language = nonEmptyString(call, "language") {
             attributes.languageOverride = language
         }
         return attributes
@@ -200,7 +200,7 @@ public class IntercomPlugin: CAPPlugin {
         return attributes
     }
 
-    private func nonEmptyString(_ call: CAPPluginCall, _ key: String) -> String? {
+    private static func nonEmptyString(_ call: CAPPluginCall, _ key: String) -> String? {
         guard let value = call.getString(key), !value.isEmpty else {
             return nil
         }
@@ -212,7 +212,7 @@ public class IntercomPlugin: CAPPlugin {
         if let id = call.getInt("id") {
             return String(id)
         }
-        return nonEmptyString(call, "id")
+        return Self.nonEmptyString(call, "id")
     }
 
     @objc func hideLauncher(_ call: CAPPluginCall) {

@@ -28,6 +28,15 @@ class IntercomTests: XCTestCase {
         XCTAssertEqual(recorder.assigned, ["name"])
     }
 
+    func testUpdateUserSkipsEmptyAttributes() {
+        let recorder = AssignmentRecorder()
+
+        _ = IntercomPlugin.userAttributes(
+            call(["email": "", "phone": "", "name": "Jane", "language": ""]), into: recorder)
+
+        XCTAssertEqual(recorder.assigned, ["name"])
+    }
+
     func testUpdateUserAssignsEveryReceivedAttribute() {
         let attributes = IntercomPlugin.userAttributes(
             call(["email": "jane@example.com", "phone": "+33600000000", "name": "Jane", "language": "fr"]))
