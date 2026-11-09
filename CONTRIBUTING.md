@@ -29,6 +29,10 @@ Build and validate the web and native projects.
 
 This is useful to run in CI to verify that the plugin builds for all platforms.
 
+#### `pnpm run test:ios`
+
+Run the Swift tests (`ios/Tests`) on the iOS simulator through the Swift package, without CocoaPods. It needs Xcode and an iPhone 17 simulator; `pnpm run verify:ios` runs it after the device build. CI runs no iOS build or test: run it before pushing a change to `ios/`.
+
 #### `pnpm run check`
 
 Check formatting, lint and types with [Vite+](https://viteplus.dev/). `pnpm run check --fix` applies the formatting and lint fixes. The pre-commit hook does the same on staged files.

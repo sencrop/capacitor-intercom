@@ -31,9 +31,10 @@
   "unpkg": "dist/plugin.js",
   "scripts": {
     "verify": "pnpm run verify:ios && pnpm run verify:android && pnpm run verify:web",
-    "verify:ios": "xcodebuild -scheme SencropCapacitorIntercom -destination generic/platform=iOS",
+    "verify:ios": "xcodebuild -scheme SencropCapacitorIntercom -destination generic/platform=iOS && pnpm run test:ios",
     "verify:android": "cd android && ./gradlew clean build test && cd ..",
     "verify:web": "pnpm run build",
+    "test:ios": "xcodebuild test -scheme SencropCapacitorIntercom -destination \"platform=iOS Simulator,name=iPhone 17\"",
     "docgen": "docgen --project tsconfig.docgen.json --api IntercomPlugin --output-readme README.md --output-json dist/docs.json && vp fmt README.md",
     "build": "vp pack && pnpm run docgen",
     "watch": "vp pack --watch",
