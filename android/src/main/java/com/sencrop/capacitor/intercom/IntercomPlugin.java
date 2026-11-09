@@ -1,9 +1,13 @@
 package com.sencrop.capacitor.intercom;
 
+import android.app.Application;
+
 import androidx.annotation.NonNull;
 
+import com.getcapacitor.CapConfig;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
+import com.getcapacitor.PluginConfig;
 import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
 
@@ -26,6 +30,26 @@ import java.util.Map;
 
 @CapacitorPlugin(name = "Intercom")
 public class IntercomPlugin extends Plugin {
+
+    private static boolean initialized;
+
+    /**
+     * Initializes Intercom with the keys of the Capacitor config. Call it from {@code
+     * Application.onCreate()}: Android can open an Intercom activity, from a tapped notification or
+     * when it restores the app, before the WebView calls {@code initialize()}, and Intercom then
+     * crashes the app.
+     */
+    public static synchronized void initialize(@NonNull Application application) {
+        if (initialized) {
+            return;
+        }
+        PluginConfig config = CapConfig.loadDefault(application).getPluginConfiguration("Intercom");
+        Intercom.initialize(
+                application,
+                config.getString("android_apiKey", "ADD_IN_CAPACITOR_CONFIG_JSON"),
+                config.getString("appId", "ADD_IN_CAPACITOR_CONFIG_JSON"));
+        initialized = true;
+    }
 
     private static Map<String, Object> mapFromJSON(JSONObject jsonObject) {
         if (jsonObject == null) {
@@ -81,11 +105,8 @@ public class IntercomPlugin extends Plugin {
 
     @PluginMethod
     public void initialize(PluginCall call) {
-        String apiKey = getConfig().getString("android_apiKey", "ADD_IN_CAPACITOR_CONFIG_JSON");
-        String appId = getConfig().getString("appId", "ADD_IN_CAPACITOR_CONFIG_JSON");
-
         try {
-            Intercom.initialize(this.getActivity().getApplication(), apiKey, appId);
+            initialize(getActivity().getApplication());
             call.resolve();
         } catch (Exception e) {
             call.reject("[Intercom SDK] Could not initialize the Intercom plugin", e);
