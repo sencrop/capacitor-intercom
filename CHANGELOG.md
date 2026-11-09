@@ -1,5 +1,12 @@
 # Changelog
 
+## [11.1.0](https://github.com/sencrop/capacitor-intercom/compare/v11.0.1...v11.1.0) (2026-11-09)
+
+
+### New features
+
+* initialize Intercom at launch on iOS, read the logged in user ([#58](https://github.com/sencrop/capacitor-intercom/issues/58)) ([919464f](https://github.com/sencrop/capacitor-intercom/commit/919464fd1f7f1aca114db164c8278843922dbf43))
+
 ## [11.0.1](https://github.com/sencrop/capacitor-intercom/compare/v11.0.0...v11.0.1) (2026-11-09)
 
 
