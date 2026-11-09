@@ -64,4 +64,30 @@ class IntercomTests: XCTestCase {
         XCTAssertEqual(recorder.assigned, ["email"])
         XCTAssertEqual(recorder.email, "jane@example.com")
     }
+
+    func testLoggedInUserIsOnlyTheFlagWhenNobodyIsLoggedIn() {
+        let attributes = ICMUserAttributes()
+        attributes.userId = "42"
+
+        let user = IntercomPlugin.loggedInUser(isLoggedIn: false, attributes: attributes)
+
+        XCTAssertEqual(user as NSDictionary, ["loggedIn": false])
+    }
+
+    func testLoggedInUserCarriesTheIdentifiers() {
+        let attributes = ICMUserAttributes()
+        attributes.userId = "42"
+        attributes.email = "jane@example.com"
+
+        let user = IntercomPlugin.loggedInUser(isLoggedIn: true, attributes: attributes)
+
+        XCTAssertEqual(
+            user as NSDictionary, ["loggedIn": true, "userId": "42", "email": "jane@example.com"])
+    }
+
+    func testLoggedInUserLeavesOutTheIdentifiersOfAnUnidentifiedUser() {
+        let user = IntercomPlugin.loggedInUser(isLoggedIn: true, attributes: ICMUserAttributes())
+
+        XCTAssertEqual(user as NSDictionary, ["loggedIn": true])
+    }
 }

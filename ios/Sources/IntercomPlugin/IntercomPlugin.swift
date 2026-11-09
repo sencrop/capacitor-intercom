@@ -28,13 +28,32 @@ public class IntercomPlugin: CAPPlugin, CAPBridgedPlugin {
         CAPPluginMethod(name: "displayLauncher", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "hideLauncher", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "displaySurvey", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "getLoggedInUser", returnType: CAPPluginReturnPromise),
     ]
 
+    private static let initializationLock = NSLock()
+    private static var initialized = false
+
+    /// Configures Intercom with the keys of the Capacitor config, once. An app may call it from
+    /// `application(_:didFinishLaunchingWithOptions:)`: Intercom then handles a tapped notification
+    /// that launches the app, before the WebView calls `initialize()`. `initialize` itself is
+    /// reserved by the Objective-C runtime.
+    @objc public static func initializeIntercom() {
+        initializationLock.lock()
+        defer { initializationLock.unlock() }
+        if initialized {
+            return
+        }
+        let config = InstanceConfiguration(with: InstanceDescriptor(), isDebug: false)
+            .getPluginConfig("Intercom")
+        Intercom.setApiKey(
+            config.getString("ios_apiKey") ?? "ADD_IN_CAPACITOR_CONFIG_JSON",
+            forAppId: config.getString("appId") ?? "ADD_IN_CAPACITOR_CONFIG_JSON")
+        initialized = true
+    }
+
     @objc func initialize(_ call: CAPPluginCall) {
-        let config = getConfig()
-        let apiKey = config.getString("ios_apiKey") ?? "ADD_IN_CAPACITOR_CONFIG_JSON"
-        let appId = config.getString("appId") ?? "ADD_IN_CAPACITOR_CONFIG_JSON"
-        Intercom.setApiKey(apiKey, forAppId: appId)
+        Self.initializeIntercom()
         NotificationCenter.default.addObserver(
             self, selector: #selector(self.didRegisterWithToken(notification:)),
             name: .capacitorDidRegisterForRemoteNotifications, object: nil)
@@ -189,6 +208,27 @@ public class IntercomPlugin: CAPPlugin, CAPBridgedPlugin {
     }
 
     // the SDK logs "'<attribute>' must be an NSString and can't be nil or empty" for each attribute set to nil or ""
+    @objc func getLoggedInUser(_ call: CAPPluginCall) {
+        call.resolve(
+            Self.loggedInUser(
+                isLoggedIn: Intercom.isUserLoggedIn(),
+                attributes: Intercom.fetchLoggedInUserAttributes()))
+    }
+
+    static func loggedInUser(isLoggedIn: Bool, attributes: ICMUserAttributes?) -> [String: Any] {
+        var user: [String: Any] = ["loggedIn": isLoggedIn]
+        guard isLoggedIn else {
+            return user
+        }
+        if let userId = attributes?.userId, !userId.isEmpty {
+            user["userId"] = userId
+        }
+        if let email = attributes?.email, !email.isEmpty {
+            user["email"] = email
+        }
+        return user
+    }
+
     static func userAttributes(
         _ call: CAPPluginCall, into attributes: ICMUserAttributes = ICMUserAttributes()
     ) -> ICMUserAttributes {

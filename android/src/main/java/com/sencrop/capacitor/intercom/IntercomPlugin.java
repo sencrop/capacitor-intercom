@@ -5,6 +5,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 
 import com.getcapacitor.CapConfig;
+import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginConfig;
@@ -110,6 +111,26 @@ public class IntercomPlugin extends Plugin {
             call.resolve();
         } catch (Exception e) {
             call.reject("[Intercom SDK] Could not initialize the Intercom plugin", e);
+        }
+    }
+
+    @PluginMethod
+    public void getLoggedInUser(PluginCall call) {
+        try {
+            JSObject user = new JSObject();
+            boolean loggedIn = Intercom.client().isUserLoggedIn();
+            user.put("loggedIn", loggedIn);
+            Registration registration =
+                    loggedIn ? Intercom.client().fetchLoggedInUserAttributes() : null;
+            if (registration != null && !isEmpty(registration.getUserId())) {
+                user.put("userId", registration.getUserId());
+            }
+            if (registration != null && !isEmpty(registration.getEmail())) {
+                user.put("email", registration.getEmail());
+            }
+            call.resolve(user);
+        } catch (Exception e) {
+            call.reject("[Intercom SDK] Error while getting the logged in user", e);
         }
     }
 

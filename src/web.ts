@@ -6,6 +6,7 @@ import type {
   IntercomCustomAttributes,
   IntercomEvent,
   IntercomIdentity,
+  IntercomLoggedInUser,
   IntercomMessage,
   IntercomPlugin,
   IntercomSettings,
@@ -202,5 +203,9 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
     if (window.Intercom) {
       await window.Intercom("startSurvey", survey.id);
     }
+  }
+
+  async getLoggedInUser(): Promise<IntercomLoggedInUser> {
+    return { loggedIn: false };
   }
 }
