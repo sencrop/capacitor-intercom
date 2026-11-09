@@ -1,5 +1,22 @@
 # Changelog
 
+## [11.0.1](https://github.com/sencrop/capacitor-intercom/compare/v11.0.0...v11.0.1) (2026-11-09)
+
+
+### Bug fixes
+
+* **android:** initialize Intercom from the Application, before Android opens an Intercom activity ([#57](https://github.com/sencrop/capacitor-intercom/issues/57)) ([2d56867](https://github.com/sencrop/capacitor-intercom/commit/2d56867a4e7aa99d48e8b6e63dc929129172ea75))
+
+
+### Documentation
+
+* point to Menu &gt; Staged Packages on npmjs.com ([#56](https://github.com/sencrop/capacitor-intercom/issues/56)) ([93328f1](https://github.com/sencrop/capacitor-intercom/commit/93328f1a0acc44b8f8c4f794202753a6506962f2))
+
+
+### CI configuration
+
+* build, test and lint the iOS plugin ([#54](https://github.com/sencrop/capacitor-intercom/issues/54)) ([01b6e22](https://github.com/sencrop/capacitor-intercom/commit/01b6e224a40ae0e2837f77eea174514f64aa966d))
+
 ## [11.0.0](https://github.com/sencrop/capacitor-intercom/compare/v10.0.2...v11.0.0) (2026-11-09)
 
 
