@@ -37,6 +37,18 @@ The plugin does not handle push notifications: the app wires them, on both platf
 
 The plugin brings the Intercom Android SDK (`io.intercom.android:intercom-sdk-base`) and exposes it to the app (`api` dependency), so the app compiles against its classes, `IntercomPushClient` included. The app does not declare Intercom itself: a second Intercom artifact, such as `io.intercom.android:intercom-sdk`, would make Gradle mix two Intercom versions. The version is the plugin's default unless the app sets `intercomSdkVersion` in its `variables.gradle`, as with the other Capacitor plugins.
 
+Call `IntercomPlugin.initialize(this)` from the `onCreate()` of the app's `Application` class. Android can open an Intercom activity before the WebView calls `initialize()`, from a tapped Intercom notification or when it restores the app after killing it, and Intercom crashes when it is not initialized by then. The `initialize()` of the JavaScript API then reuses that initialization.
+
+```java
+public class MyApplication extends Application {
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        IntercomPlugin.initialize(this);
+    }
+}
+```
+
 ## API
 
 <docgen-index>
