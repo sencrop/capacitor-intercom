@@ -8,5 +8,5 @@ Run every command from a devenv shell (`devenv shell -- <command>`): Node.js and
 
 Native code is outside `pnpm run check`:
 
-- `pnpm run check:ios` lints the Swift code with swift-format (shipped with Xcode); `xcrun swift-format format --in-place --recursive ios/Sources ios/Tests` fixes the formatting. The pre-commit hook formats and lints the staged Swift files; CI does not check them
+- `pnpm run check:ios` lints the Swift code with swift-format (shipped with Xcode); `xcrun swift-format format --in-place --recursive ios/Sources ios/Tests` fixes the formatting. The pre-commit hook formats and lints the staged Swift files; CI runs it too
 - `pnpm run check:android` checks the Java formatting with google-java-format (AOSP style, from devenv) and runs Android Lint (JDK 21 from devenv, needs the Android SDK); `google-java-format --aosp --replace <files>` fixes the formatting. The pre-commit hook formats the staged Java files
