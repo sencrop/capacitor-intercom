@@ -38,18 +38,7 @@ public class IntercomPlugin: CAPPlugin {
     }
 
     @objc func updateUser(_ call: CAPPluginCall) {
-        let email = call.getString("email")
-        let phone = call.getString("phone")
-        let name = call.getString("name")
-        let language = call.getString("language")
-
-        let userAttributes = ICMUserAttributes()
-        userAttributes.email = email
-        userAttributes.phone = phone
-        userAttributes.name = name
-        userAttributes.languageOverride = language
-
-        Intercom.updateUser(with: userAttributes) { result in
+        Intercom.updateUser(with: Self.userAttributes(call)) { result in
             switch result {
             case .success:
                 call.resolve()
@@ -80,9 +69,9 @@ public class IntercomPlugin: CAPPlugin {
     }
 
     @objc func loginIdentifiedUser(_ call: CAPPluginCall) {
-        let userId = nonEmptyString(call, "userId")
-        let email = nonEmptyString(call, "email")
-        let hmac = nonEmptyString(call, "userHash")
+        let userId = Self.nonEmptyString(call, "userId")
+        let email = Self.nonEmptyString(call, "email")
+        let hmac = Self.nonEmptyString(call, "userHash")
 
         if userId == nil && email == nil {
             call.reject("[Intercom SDK] You must supply an email, userId or both")
@@ -93,11 +82,7 @@ public class IntercomPlugin: CAPPlugin {
             Intercom.setUserHash(hmac)
         }
 
-        let attributes = ICMUserAttributes()
-        attributes.userId = userId
-        attributes.email = email
-
-        Intercom.loginUser(with: attributes) { result in
+        Intercom.loginUser(with: Self.identityAttributes(userId: userId, email: email)) { result in
             switch result {
             case .success:
                 call.resolve()
@@ -125,12 +110,12 @@ public class IntercomPlugin: CAPPlugin {
     }
 
     @objc func logEvent(_ call: CAPPluginCall) {
-        guard let eventName = nonEmptyString(call, "name") else {
+        guard let eventName = Self.nonEmptyString(call, "name") else {
             call.reject("[Intercom SDK] You must supply an event name")
             return
         }
 
-        if let metaData = call.getObject("data") {
+        if let metaData = call.getObject("data"), !metaData.isEmpty {
             Intercom.logEvent(withName: eventName, metaData: metaData)
         } else {
             Intercom.logEvent(withName: eventName)
@@ -184,7 +169,38 @@ public class IntercomPlugin: CAPPlugin {
         call.resolve()
     }
 
-    private func nonEmptyString(_ call: CAPPluginCall, _ key: String) -> String? {
+    // the SDK logs "'<attribute>' must be an NSString and can't be nil or empty" for each attribute set to nil or ""
+    static func userAttributes(
+        _ call: CAPPluginCall, into attributes: ICMUserAttributes = ICMUserAttributes()
+    ) -> ICMUserAttributes {
+        if let email = nonEmptyString(call, "email") {
+            attributes.email = email
+        }
+        if let phone = nonEmptyString(call, "phone") {
+            attributes.phone = phone
+        }
+        if let name = nonEmptyString(call, "name") {
+            attributes.name = name
+        }
+        if let language = nonEmptyString(call, "language") {
+            attributes.languageOverride = language
+        }
+        return attributes
+    }
+
+    static func identityAttributes(
+        userId: String?, email: String?, into attributes: ICMUserAttributes = ICMUserAttributes()
+    ) -> ICMUserAttributes {
+        if let userId {
+            attributes.userId = userId
+        }
+        if let email {
+            attributes.email = email
+        }
+        return attributes
+    }
+
+    private static func nonEmptyString(_ call: CAPPluginCall, _ key: String) -> String? {
         guard let value = call.getString(key), !value.isEmpty else {
             return nil
         }
@@ -196,7 +212,7 @@ public class IntercomPlugin: CAPPlugin {
         if let id = call.getInt("id") {
             return String(id)
         }
-        return nonEmptyString(call, "id")
+        return Self.nonEmptyString(call, "id")
     }
 
     @objc func hideLauncher(_ call: CAPPluginCall) {
