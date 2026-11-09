@@ -45,4 +45,4 @@ jobs:
         working-directory: ${{ runner.temp }}/package
         run: |
           npm stage publish ./*.tgz
-          echo "Staged: approve it with 2FA in the Staged Packages tab of your npm account settings, https://www.npmjs.com/settings/<your-npm-username>/staged-packages, or with \`npm stage approve <stage-id>\` (\`npm stage list @sencrop/capacitor-intercom\`)." >> "$GITHUB_STEP_SUMMARY"
+          echo "Staged: approve it with 2FA on https://www.npmjs.com/, Menu > Staged Packages, or with \`npm stage approve <stage-id>\` (\`npm stage list @sencrop/capacitor-intercom\`)." >> "$GITHUB_STEP_SUMMARY"
